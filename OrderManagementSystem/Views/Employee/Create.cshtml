@@ -78,7 +78,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="CountryID" class="control-label"></label>
-                <input asp-for="CountryID" class="form-control" />
+                <select asp-for="CountryID" asp-items="@Model.CountryList" class="form-control"></select>
                 <span asp-validation-for="CountryID" class="text-danger"></span>
             </div>
             <div class="form-group">

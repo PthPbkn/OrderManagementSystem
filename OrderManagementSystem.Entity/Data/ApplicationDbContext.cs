@@ -18,5 +18,7 @@ namespace OrderManagementSystem.Entity.Data
         public  DbSet<Employee> EmployeeSet{ get; set; }
         public DbSet<Department> DepartmentSet { get; set; }
 
+        public DbSet<Country> CountrySet { get; set; }
+
     }
 }

@@ -12,14 +12,17 @@ namespace OrderManagementSystem.Controllers
         private readonly IEmployeeRepository _repository;
         private readonly IToastNotification _toastNotification;
         private readonly IDepartmentRepository _departmentRepository;
+        private readonly ICountryRespository _countryRespository;
 
         public EmployeeController(IEmployeeRepository repository,
             IToastNotification toastNotification,
-            IDepartmentRepository departmentRepository)
+            IDepartmentRepository departmentRepository,
+            ICountryRespository countryRespository)
         {
             this._repository = repository;
             this._toastNotification = toastNotification;
             this._departmentRepository = departmentRepository;
+            this._countryRespository = countryRespository;
         }
 
 
@@ -33,6 +36,7 @@ namespace OrderManagementSystem.Controllers
         {
             Employee employee = new Employee();
             employee.DepartmentList = await GetDepartments();
+            employee.CountryList = await GetCountryNames();
             return View(employee);
         }
         [HttpPost]
@@ -50,7 +54,9 @@ namespace OrderManagementSystem.Controllers
                 return View(emp);
             }
             emp.DepartmentList = await GetDepartments();
+            emp.CountryList = await GetCountryNames();
             return View(emp);
+
         }
 
         public async Task<List<SelectListItem>> GetDepartments() 
@@ -62,6 +68,18 @@ namespace OrderManagementSystem.Controllers
                 selectList.Add(new SelectListItem { Text = department.DepartmentName,Value=department.DepartmentID.ToString()}); 
             }
             return selectList;
+        }
+
+        public async Task<List<SelectListItem>> GetCountryNames() 
+        {
+            var countryList = new List<SelectListItem>();
+            var countries = await _countryRespository.GetCountries();
+            foreach( var country in countries )
+            {
+                countryList.Add(new SelectListItem { Text = country.CountryName, Value=country.CountryID.ToString()});
+            }
+            return countryList;
+
         }
 
     }

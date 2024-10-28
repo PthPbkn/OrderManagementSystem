@@ -51,6 +51,8 @@ public partial class Employee
     public int? DepartmentID { get; set; }
     [NotMapped]
     public List<SelectListItem>? DepartmentList { get; set; }
+    [NotMapped]
+    public List<SelectListItem>? CountryList { get; set; }
 
     public virtual ICollection<Order> TblOrders { get; set; } = new List<Order>();
 }
