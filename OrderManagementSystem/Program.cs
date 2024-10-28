@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using NToastNotify;
 using OrderManagementSystem.Entity.Data;
 using OrderManagementSystem.Services.Repository;
 
@@ -10,8 +11,17 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
      options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
 
-builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
+builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation().AddNToastNotifyToastr(new ToastrOptions
+{
+    CloseButton = true,
+    TimeOut = 30000,
+    ProgressBar = true,
+    CloseDuration = true,
+    PositionClass = ToastPositions.TopCenter,
+
+});
 
 var app = builder.Build();
 

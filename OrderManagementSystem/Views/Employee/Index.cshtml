@@ -1,7 +1,12 @@
-﻿@model IEnumerable<OrderManagementSystem.Entity.Model.Employees>
+﻿@model IEnumerable<OrderManagementSystem.Entity.Models.Employee>
 
 @{
     ViewData["Title"] = "Index";
+}
+
+@section styles
+{
+    <link href="~/datatables/css/jquery.datatables.min.css" rel="stylesheet" />
 }
 
 <h3>Employee List</h3>
@@ -9,11 +14,11 @@
 <p>
     <a asp-action="Create" class="btn btn-primary">Add New Employee</a>
 </p>
-<table class="table">
+<table class="table" id="EmployeeTable">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.EmployeeID)
+                @Html.DisplayNameFor(models => models.EmployeeID)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Title)
@@ -47,7 +52,7 @@
                 @Html.DisplayNameFor(model => model.PostCode)
             </th> *@
             <th>
-                @Html.DisplayNameFor(model => model.Country)
+                @Html.DisplayNameFor(model => model.CountryID)
             </th>
            @*  <th>
                 @Html.DisplayNameFor(model => model.Phone)
@@ -102,7 +107,7 @@
                 @Html.DisplayFor(modelItem => item.PostCode)
             </td> *@
             <td>
-                @Html.DisplayFor(modelItem => item.Country)
+                @Html.DisplayFor(modelItem => item.CountryID)
             </td>
             @* <td>
                 @Html.DisplayFor(modelItem => item.Phone)
@@ -123,5 +128,18 @@
             </td>
         </tr>
 }
-    </tbody>
+    </tbody> 
 </table>
+
+@section scripts
+{
+    <script src="~/datatables/js/datatables.datatables.min.js"></script>
+    <script src="~/datatables/js/jquery.datatables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#EmployeeTable').DataTable();
+        });
+
+    </script>
+
+}

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OrderManagementSystem.Entity.Data;
-using OrderManagementSystem.Entity.Model;
+using OrderManagementSystem.Entity.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,9 +18,20 @@ namespace OrderManagementSystem.Services.Repository
             this._context = context;
         }
 
-        public async Task<List<Employees>> GetAllEmployees()
+        public async Task<int> AddEmployee(Employee employee)
+        {
+            _context.EmployeeSet.Add(employee);
+            int result = await _context.SaveChangesAsync();
+            return result;
+        }
+
+      
+
+        public async Task<List<Employee>> GetAllEmployees()
         {
             return await _context.EmployeeSet.ToListAsync();
         }
+
+   
     }
 }

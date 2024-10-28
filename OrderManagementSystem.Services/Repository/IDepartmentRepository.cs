@@ -7,10 +7,8 @@ using System.Threading.Tasks;
 
 namespace OrderManagementSystem.Services.Repository
 {
-    public interface IEmployeeRepository
+    public interface IDepartmentRepository
     {
-        Task<List<Employee>> GetAllEmployees();
-
-        Task<int> AddEmployee(Employee employee);
+        Task<List<Department>> GetAllDepartments();
     }
 }

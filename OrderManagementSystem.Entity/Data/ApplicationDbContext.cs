@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using OrderManagementSystem.Entity.Model;
+using OrderManagementSystem.Entity.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +15,8 @@ namespace OrderManagementSystem.Entity.Data
             
         }
 
-        public  DbSet<Employees> EmployeeSet{ get; set; }
+        public  DbSet<Employee> EmployeeSet{ get; set; }
+        public DbSet<Department> DepartmentSet { get; set; }
 
     }
 }
