@@ -13,16 +13,19 @@ namespace OrderManagementSystem.Controllers
         private readonly IToastNotification _toastNotification;
         private readonly IDepartmentRepository _departmentRepository;
         private readonly ICountryRespository _countryRespository;
+        private readonly IWebHostEnvironment _env;
 
         public EmployeeController(IEmployeeRepository repository,
             IToastNotification toastNotification,
             IDepartmentRepository departmentRepository,
-            ICountryRespository countryRespository)
+            ICountryRespository countryRespository,
+            IWebHostEnvironment env)
         {
             this._repository = repository;
             this._toastNotification = toastNotification;
             this._departmentRepository = departmentRepository;
             this._countryRespository = countryRespository;
+            this._env = env;
         }
 
 
@@ -44,6 +47,18 @@ namespace OrderManagementSystem.Controllers
         {
             if (ModelState.IsValid) 
             {
+                if(emp.file != null)
+                {
+                    string path = Path.Combine(_env.WebRootPath, "Images");
+                    string imagePath = Path.Combine(path,emp.file.FileName);
+                    using(var fileStream = new FileStream(imagePath,FileMode.Create))
+
+                    {
+                        emp.file.CopyTo(fileStream);
+                    }
+                    emp.ImagePath = imagePath;
+                       
+                }
                 var result = await _repository.AddEmployee(emp);
                 if (result == 1)
                 {

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -49,6 +50,10 @@ public partial class Employee
     [Required]
     [Display(Name ="Department")]
     public int? DepartmentID { get; set; }
+    [NotMapped]
+    public IFormFile file { get; set; }
+
+    public string? ImagePath { get; set; }
     [NotMapped]
     public List<SelectListItem>? DepartmentList { get; set; }
     [NotMapped]
