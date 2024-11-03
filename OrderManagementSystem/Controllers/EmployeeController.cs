@@ -31,7 +31,6 @@ namespace OrderManagementSystem.Controllers
             this._env = env;
         }
 
-
         public async Task<IActionResult> Index()
         {
             var employees = await _repository.GetAllEmployees();
@@ -108,14 +107,9 @@ namespace OrderManagementSystem.Controllers
                 emp.ImagePath = fileName;
             }
             await _repository.UpdateEmployeeByEmployeeID(emp);
+            //how to do error response check?
             return RedirectToAction("Index");
         }
-
-        //public async Task<IActionResult> Delete(int id)
-        //{
-        //    await _repository.DeleteEmployeeByEmployeeID(id);
-        //    return RedirectToAction("Index");
-        //}
 
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
@@ -129,7 +123,8 @@ namespace OrderManagementSystem.Controllers
         public async Task<IActionResult> ConfirmDelete(int id)
         {
             await _repository.DeleteEmployeeByEmployeeID(id);
-            return RedirectToAction("Index");
+            _toastNotification.AddSuccessToastMessage("Employee record deleted!");
+            return RedirectToAction("Index");                                     
         }
 
         public async Task<List<SelectListItem>> GetDepartments() 
@@ -161,3 +156,7 @@ namespace OrderManagementSystem.Controllers
 
     }
 }
+
+
+// Toast is not working
+// add modal popup for delete record

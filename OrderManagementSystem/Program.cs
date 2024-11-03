@@ -6,14 +6,6 @@ using OrderManagementSystem.Services.Repository;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
-
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
-builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
-builder.Services.AddScoped<ICountryRespository,CountryRepository>();    
-
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation().AddNToastNotifyToastr(new ToastrOptions
 {
     CloseButton = true,
@@ -23,6 +15,14 @@ builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation().AddNToas
     PositionClass = ToastPositions.TopCenter,
 
 });
+
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+builder.Services.AddScoped<ICountryRespository,CountryRepository>(); 
+builder.Services.AddScoped<IMenuRepository, MenuRepository>();
+
 
 var app = builder.Build();
 
