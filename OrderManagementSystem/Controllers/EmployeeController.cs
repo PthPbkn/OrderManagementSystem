@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using NToastNotify;
+using OrderManagementSystem.Entity.Data;
 using OrderManagementSystem.Entity.Models;
 using OrderManagementSystem.Services.Repository;
 
@@ -20,6 +22,7 @@ namespace OrderManagementSystem.Controllers
             IDepartmentRepository departmentRepository,
             ICountryRespository countryRespository,
             IWebHostEnvironment env)
+            
         {
             this._repository = repository;
             this._toastNotification = toastNotification;
@@ -45,19 +48,20 @@ namespace OrderManagementSystem.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(Employee emp) 
         {
+            string fileName = string.Empty;
             if (ModelState.IsValid) 
             {
                 if(emp.file != null)
                 {
                     string path = Path.Combine(_env.WebRootPath, "Images");
-                    string imagePath = Path.Combine(path,emp.file.FileName);
+                    //can not create image with EmployeeID as ID not assigned when creating new record.!
+                    fileName = Guid.NewGuid().ToString() + ".jpeg";
+                    string imagePath = Path.Combine(path,fileName);
                     using(var fileStream = new FileStream(imagePath,FileMode.Create))
-
                     {
-                        emp.file.CopyTo(fileStream);
+                        emp.file.CopyTo(fileStream);                        
                     }
-                    emp.ImagePath = imagePath;
-                       
+                    emp.ImagePath = fileName;                       
                 }
                 var result = await _repository.AddEmployee(emp);
                 if (result == 1)
@@ -72,6 +76,39 @@ namespace OrderManagementSystem.Controllers
             emp.CountryList = await GetCountryNames();
             return View(emp);
 
+        }
+
+        public async Task<IActionResult> Details(int id)
+        { 
+            var employee = await _repository.GetEmployeeByEmployeeID(id);            
+            return View(employee);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var employee = await _repository.GetEmployeeByID(id);
+            employee.DepartmentList = await GetDepartments();
+            employee.CountryList = await GetCountryNames();
+            return View(employee);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(Employee emp)
+        {             
+            if (emp.file != null)
+            {
+                string path = Path.Combine(_env.WebRootPath, "Images");
+                string fileName = Guid.NewGuid().ToString() + ".jpeg";
+                string imagePath = Path.Combine(path, fileName);
+                using (var fileStream = new FileStream(imagePath, FileMode.Create))
+                {
+                    emp.file.CopyTo(fileStream);
+                }
+                emp.ImagePath = fileName;
+            }
+            await _repository.UpdateEmployeeByEmployeeID(emp);
+            return RedirectToAction("Index");
         }
 
         public async Task<List<SelectListItem>> GetDepartments() 
@@ -96,6 +133,10 @@ namespace OrderManagementSystem.Controllers
             return countryList;
 
         }
+
+        
+
+               
 
     }
 }

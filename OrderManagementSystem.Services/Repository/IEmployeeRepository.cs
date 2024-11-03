@@ -1,4 +1,5 @@
 ﻿using OrderManagementSystem.Entity.Models;
+using OrderManagementSystem.Entity.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,5 +13,11 @@ namespace OrderManagementSystem.Services.Repository
         Task<List<Employee>> GetAllEmployees();
 
         Task<int> AddEmployee(Employee employee);
+
+        Task<EmployeeViewModel> GetEmployeeByEmployeeID(int id);
+        Task<Employee> GetEmployeeByID(int id);
+
+        Task UpdateEmployeeByEmployeeID(Employee employee);
+
     }
 }
