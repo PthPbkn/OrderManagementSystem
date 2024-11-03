@@ -26,6 +26,16 @@ namespace OrderManagementSystem.Services.Repository
             return result;
         }
 
+        public async Task DeleteEmployeeByEmployeeID(int id)
+        {
+            var employee = await _context.EmployeeSet.FindAsync(id);
+            if (employee != null)
+            {
+                _context.EmployeeSet.Remove(employee);
+                await _context.SaveChangesAsync();
+            }           
+        }
+
         public async Task<List<Employee>> GetAllEmployees()
         {
             return await _context.EmployeeSet.ToListAsync();

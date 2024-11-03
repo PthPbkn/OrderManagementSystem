@@ -111,6 +111,27 @@ namespace OrderManagementSystem.Controllers
             return RedirectToAction("Index");
         }
 
+        //public async Task<IActionResult> Delete(int id)
+        //{
+        //    await _repository.DeleteEmployeeByEmployeeID(id);
+        //    return RedirectToAction("Index");
+        //}
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var employee = await _repository.GetEmployeeByEmployeeID(id);
+            return View(employee);
+        }
+
+        [HttpPost]
+        [ActionName("Delete")]
+        public async Task<IActionResult> ConfirmDelete(int id)
+        {
+            await _repository.DeleteEmployeeByEmployeeID(id);
+            return RedirectToAction("Index");
+        }
+
         public async Task<List<SelectListItem>> GetDepartments() 
         {
             var selectList = new List<SelectListItem>();

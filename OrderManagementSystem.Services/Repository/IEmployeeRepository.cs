@@ -18,6 +18,7 @@ namespace OrderManagementSystem.Services.Repository
         Task<Employee> GetEmployeeByID(int id);
 
         Task UpdateEmployeeByEmployeeID(Employee employee);
+        Task DeleteEmployeeByEmployeeID(int id);
 
     }
 }
