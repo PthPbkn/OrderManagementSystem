@@ -107,7 +107,8 @@ namespace OrderManagementSystem.Controllers
                 emp.ImagePath = fileName;
             }
             await _repository.UpdateEmployeeByEmployeeID(emp);
-            //how to do error response check?
+            //how check error response?
+            _toastNotification.AddSuccessToastMessage("Employee record updated successfully");
             return RedirectToAction("Index");
         }
 
@@ -148,11 +149,7 @@ namespace OrderManagementSystem.Controllers
             }
             return countryList;
 
-        }
-
-        
-
-               
+        }                   
 
     }
 }
