@@ -75,6 +75,8 @@ namespace OrderManagementSystem.Controllers
             await _signInManager.SignOutAsync();
             return RedirectToAction(nameof(Login));
             //return View();
+
+           
         }
     }
 }
