@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OrderManagementSystem.Entity.Models;
 
+[Table("tbl_Customer")]
 public partial class Customer
 {
     [Key]
     public int CustomerId { get; set; }
 
-    public string? CompanyName { get; set; }
+    public string? CustomerName { get; set; }
 
-    public string? ContactName { get; set; }
-
-    public string? ContactTitle { get; set; }
+    public string? Title { get; set; }
 
     public string? Address { get; set; }
 

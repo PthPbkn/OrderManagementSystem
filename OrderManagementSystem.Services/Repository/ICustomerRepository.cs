@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OrderManagementSystem.Entity.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,10 @@ using System.Threading.Tasks;
 
 namespace OrderManagementSystem.Services.Repository
 {
-    internal interface ICustomerRepository
+    public interface ICustomerRepository
     {
+        Task<List<Customer>> GetAllCustomers(); 
+
+        
     }
 }

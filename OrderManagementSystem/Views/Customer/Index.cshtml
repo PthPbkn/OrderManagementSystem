@@ -1,0 +1,87 @@
+﻿@model IEnumerable<OrderManagementSystem.Entity.Models.Customer>
+
+@{
+    ViewData["Title"] = "ViewAllCustomers";
+}
+
+@section styles
+{
+    <link href="~/datatables/css/jquery.datatables.min.css" rel="stylesheet" />
+}
+
+<h1>Customers</h1>
+
+
+<table class="table" id="CustomerTable">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CustomerName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.City)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PostCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Country)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Phone)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CustomerName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.City)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PostCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Country)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Phone)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.CustomerId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.CustomerId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.CustomerId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+@section scripts
+{
+    <script src="~/datatables/js/datatables.datatables.min.js"></script>
+    <script src="~/datatables/js/jquery.datatables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#CustomerTable').DataTable();
+        });
+
+    </script>
+
+}

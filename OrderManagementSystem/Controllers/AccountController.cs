@@ -27,11 +27,14 @@ namespace OrderManagementSystem.Controllers
             if (ModelState.IsValid) 
             {
                 var user = await _userManager.FindByNameAsync(model.UserName);
-                var result = await _signInManager.PasswordSignInAsync(user,model.Password,false,false);
-                if (result.Succeeded) 
+                if(user != null)
                 {
-                    return RedirectToAction("Index", "Employee");
-                }
+                    var result = await _signInManager.PasswordSignInAsync(user, model.Password, false, false);
+                    if (result.Succeeded)
+                    {
+                        return RedirectToAction("Index", "Employee");
+                    }
+                }               
 
                 ModelState.AddModelError(string.Empty, "Invalid Username OR Password");
             }

@@ -155,5 +155,3 @@ namespace OrderManagementSystem.Controllers
 }
 
 
-// Toast is not working
-// add modal popup for delete record

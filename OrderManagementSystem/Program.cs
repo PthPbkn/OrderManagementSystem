@@ -25,6 +25,7 @@ builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
 builder.Services.AddScoped<ICountryRespository, CountryRepository>(); 
 builder.Services.AddScoped<IMenuRepository, MenuRepository>();
+builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 builder.Services.AddIdentity<ApplicationUser,IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
 
 
