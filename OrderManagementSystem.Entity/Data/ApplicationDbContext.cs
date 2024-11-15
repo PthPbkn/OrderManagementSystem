@@ -22,6 +22,9 @@ namespace OrderManagementSystem.Entity.Data
         public DbSet<Country> CountrySet { get; set; }
         public DbSet<Menu> MenuSet { get; set; }
         public DbSet<Customer> CustomerSet { get; set; }
+        public DbSet<Product> ProductSet { get; set; }
+        public DbSet<Supplier> SupplierSet { get; set; }
+
 
 
     }

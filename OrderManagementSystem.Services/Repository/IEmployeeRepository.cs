@@ -15,6 +15,7 @@ namespace OrderManagementSystem.Services.Repository
         Task<int> AddEmployee(Employee employee);
 
         Task<EmployeeViewModel> GetEmployeeByEmployeeID(int id);
+
         Task<Employee> GetEmployeeByID(int id);
 
         Task UpdateEmployeeByEmployeeID(Employee employee);
