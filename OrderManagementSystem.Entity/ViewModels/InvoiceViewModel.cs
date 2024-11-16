@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,5 +18,13 @@ namespace OrderManagementSystem.Entity.ViewModels
         public string? City { get; set; }
         public string? PostCode { get; set; }
         public string? Phone { get; set; }
+
+        public List<SelectListItem>? SupplierList { get; set; }
+
+        public List<SelectListItem>? ProductsList { get; set; }
+
+
+
+
     }
 }

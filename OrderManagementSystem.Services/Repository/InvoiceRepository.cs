@@ -1,4 +1,5 @@
-﻿using OrderManagementSystem.Entity.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using OrderManagementSystem.Entity.Data;
 using OrderManagementSystem.Entity.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -19,12 +20,27 @@ namespace OrderManagementSystem.Services.Repository
 
         public Task<List<InvoiceViewModel>> GetProducts()
         {
+            
+            var products = new List<InvoiceViewModel>();
             throw new NotImplementedException();
         }
 
-        public Task<List<InvoiceViewModel>> GetSuppliers()
+        public async Task<InvoiceViewModel> GetSuppliers()
         {
-            throw new NotImplementedException();
+            //return await _context.SupplierSet.ToListAsync();
+
+            var suppliers = await (from supplier in _context.SupplierSet select new InvoiceViewModel
+            {
+                SupplierId = supplier.SupplierId,
+                SupplierName = supplier.SupplierName,
+                Address = supplier.Address,
+                City = supplier.City,
+                PostCode = supplier.PostCode,
+                Phone = supplier.Phone,
+            }).FirstOrDefaultAsync();
+            return suppliers;            
         }
+
+        
     }
 }

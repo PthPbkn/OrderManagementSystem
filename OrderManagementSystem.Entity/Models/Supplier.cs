@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -11,6 +12,7 @@ public partial class Supplier
     [Key]
     public int SupplierId { get; set; }
 
+    [Display(Name = "Supplier Name")]
     public string? SupplierName { get; set; }
 
      public string? Address { get; set; }
@@ -20,6 +22,7 @@ public partial class Supplier
     public string? PostCode { get; set; }
 
     public string? Phone { get; set; }
+
 
     public virtual ICollection<Product> TblProducts { get; set; } = new List<Product>();
 }
