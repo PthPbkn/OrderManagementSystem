@@ -35,12 +35,17 @@ namespace OrderManagementSystem.Services.Repository
            return await _context.ProductSet.ToListAsync();
         }
 
-        public Task<Product> GetProductById(int id)
+        public Task<List<Product>> GetProductById(int id)
         {
             throw new NotImplementedException();
         }
 
         public Task<Product> UpdateProduct(Product product)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<Product> IProductRepository.GetProductById(int id)
         {
             throw new NotImplementedException();
         }

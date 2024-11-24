@@ -9,7 +9,10 @@ namespace OrderManagementSystem.Services.Repository
 {
     public interface IInvoiceRepository
     {
-        Task<List<InvoiceViewModel>> GetProducts();
-        Task<InvoiceViewModel> GetSuppliers();
+        Task<List<InvoiceViewModel>> GetProductsBySupplierId(int Id);
+        Task<InvoiceViewModel> GetProductsByID(int Id);
+        Task<List<InvoiceViewModel>> GetSuppliers();
+        Task<InvoiceViewModel> GetSupplierById(int Id);
+
     }
 }

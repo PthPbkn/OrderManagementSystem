@@ -1,5 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 using OrderManagementSystem.Entity.Data;
+using OrderManagementSystem.Entity.Models;
 using OrderManagementSystem.Entity.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -18,17 +21,8 @@ namespace OrderManagementSystem.Services.Repository
             this._context = context;
         }
 
-        public Task<List<InvoiceViewModel>> GetProducts()
+        public async Task<List<InvoiceViewModel>> GetSuppliers()
         {
-            
-            var products = new List<InvoiceViewModel>();
-            throw new NotImplementedException();
-        }
-
-        public async Task<InvoiceViewModel> GetSuppliers()
-        {
-            //return await _context.SupplierSet.ToListAsync();
-
             var suppliers = await (from supplier in _context.SupplierSet select new InvoiceViewModel
             {
                 SupplierId = supplier.SupplierId,
@@ -37,10 +31,47 @@ namespace OrderManagementSystem.Services.Repository
                 City = supplier.City,
                 PostCode = supplier.PostCode,
                 Phone = supplier.Phone,
-            }).FirstOrDefaultAsync();
+            }).ToListAsync();
             return suppliers;            
         }
 
-        
+        public async Task<List<InvoiceViewModel>> GetProductsBySupplierId(int Id)
+        {
+            var products = await (from prd in _context.ProductSet
+                                  join splr in _context.SupplierSet on prd.SupplierId equals splr.SupplierId
+                                  where splr.SupplierId == Id
+                                  select new InvoiceViewModel
+                                  {
+                                      ProductID = prd.ProductId,
+                                      ProductName = prd.ProductName,
+                                   }).ToListAsync();
+            return products;
+        }
+
+        public async Task<InvoiceViewModel> GetSupplierById(int Id)  //  this should be here OR supplier repo?
+        {
+            var supplier = await (from splr in _context.SupplierSet
+                                  where splr.SupplierId == Id
+                                  select new InvoiceViewModel
+                                  {
+                                      Address = splr.Address,
+                                      City = splr.City,
+                                      PostCode = splr.PostCode,
+                                      Phone = splr.Phone,
+                                  }).FirstAsync();
+            return supplier;
+        }
+
+        public async Task<InvoiceViewModel> GetProductsByID(int Id)
+        {
+            var products = await (from prod in _context.ProductSet
+                                  where prod.ProductId == Id
+                                  select new InvoiceViewModel
+                                  {
+                                      UnitPrice = prod.UnitPrice,
+                                      UnitsInStock = prod.UnitsInStock,
+                                  }).FirstAsync();
+            return products;
+        }
     }
 }

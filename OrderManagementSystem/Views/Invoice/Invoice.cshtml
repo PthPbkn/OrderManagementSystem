@@ -5,34 +5,302 @@
 }
 
 
-<h4>Invoice</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit" method="post" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="SupplierName" class="control-label"></label>
-                <select asp-for="SupplierName" asp-items="@Model.SupplierList" class="form-control"></select>
-                <span asp-validation-for="SupplierName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Address" class="control-label"></label>
-                @* <select asp-for="Address" asp-items="@Model.Address" class="form-control"></select> *@
-                @* <p>Your place is: @Model.Address</p>
-                @Html.DisplayNameFor(model => model.Address) *@
-                <span asp-validation-for="Address" class="text-danger"></span>
-            </div>
-        </form>
+@* Supplier Card*@
+<div class="card mb-2" >
+    <div class="card-header">
+        Supplier
+    </div>
+    <div class="card-body">
+        <table class="table table-borderless">
+            <tr>
+                <td>
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        @* <label asp-for="SupplierName" class="control-label"></label> *@
+                        <select asp-for="SupplierName" asp-items="@Model.SupplierList" class="form-control" id="Suppliers">
+                            <option value="0"> --- Select Supplier --- </option>
+                        </select>
+                    </div>
+                </td>
+                <td>
+                    <div class="form-group">
+                        @* <label asp-for="Address" class="control-label"></label> *@
+                        <input id="SuppAddress" type="text" asp-for="Address" value="Address" class="form-control" readonly />
+                    </div>
+                </td>
+                <td>
+                    <div class="form-group">
+                        @* <label asp-for="Phone" class="control-label"></label> *@
+                        <input id="SuppCity" type="text" asp-for="City" value="City" class="form-control" readonly />
+                    </div>
+                </td>
+                <td>
+                    <div class="form-group">
+                        @* <label asp-for="Phone" class="control-label"></label> *@
+                        <input id="SuppPost" type="text" asp-for="PostCode" value ="PostCode" class="form-control" readonly />
+                    </div>
+                </td>
+                <td>
+                    <div class="form-group">
+                        @* <label asp-for="Phone" class="control-label"></label> *@
+                        <input id="SuppPhone" type="text" asp-for="Phone" value="Phone" class="form-control" readonly />
+                    </div>
+                </td>
+               @*  <td>
+                    <div class="form-group">
+                        <input type="submit" value="Select Supplier" class="btn btn-primary form-control" />
+                    </div>
+                </td> *@
+            </tr>
+        </table>
+
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+
+
+@* Products Card*@
+<div class="card mb-3" >
+    <div class="card-header">
+        Products
+    </div>
+    <div class="card-body">
+        <table class="table table-borderless">
+           @*  <thead style="background-color:#d3dbd5 ; " class="text-muted">
+                <tr>
+                    <th scope="col">Product Name</th>
+                    <th scope="col">Unit Price</th>
+                    <th scope="col">Items In Stock</th>
+                    <th scope="col">Quantity</th>
+                </tr>
+            </thead> *@
+            <tbody>
+            <tr>
+                <td>
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="ProductName" class="control-label" style="font-size:12px;"></label>
+                        <select id="products" asp-for="ProductName" asp-items="@Model.ProductsList" class="form-control">
+                            <option value="0">--- Products ---</option>
+                        </select>
+                    </div>
+                </td>
+                <td>
+                    <div class="form-group">
+                            <label asp-for="UnitPrice" class="control-label" style="font-size:12px;"></label>
+                        <input id="UnitPrice" asp-for="UnitPrice" type="text" value="10.50" class="form-control" readonly />
+                    </div>
+                </td>
+                <td>
+                    <div class="form-group">
+                            <label asp-for="UnitsInStock" class="control-label" style="font-size:12px;"></label>
+                        <input id="UnitsInStock" asp-for="UnitsInStock" type="text" value="500" class="form-control" readonly />
+                    </div>
+                </td>
+                <td>
+                    <div class="form-group">
+                        <label asp-for="UnitsOnOrder" class="control-label" style="font-size:12px;"></label>
+                        <input id="Quantity" asp-for="UnitsOnOrder" type="text" value="0" class="form-control" />
+                    </div>
+                </td>
+                    <td>
+                        <div class="form-group">
+                            <label asp-for="Amount" class="control-label" style="font-size:12px;"></label>
+                            <input id="total" asp-for="Amount" type="text" value="0.00" class="form-control" readonly/>
+                        </div>
+                    </td>
+                <td>
+                    <div class="form-group">
+                            <input id="addItem" type="submit" value="+" class="btn btn-primary form-control" />
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
+
+@* Invoice Card*@
+
+<div class="card">
+    <div class="card-body">
+        <div class="container mb-5 mt-3">
+            <div class="row d-flex align-items-baseline">
+                <div class="col-xl-9">
+                    <p style="color: #7e8d9f;font-size: 20px;"><strong>ID: #10001246</strong></p>
+                </div>
+                <div class="col-xl-3 float-end">
+                    <a data-mdb-ripple-init class="btn btn-light text-capitalize border-0" data-mdb-ripple-color="dark">
+                        <i class="fas fa-print text-primary"></i> Print
+                    </a>
+                    <a data-mdb-ripple-init class="btn btn-light text-capitalize" data-mdb-ripple-color="dark">
+                        <i class="far fa-file-pdf text-danger"></i> Export
+                    </a>
+                </div>
+                <hr>
+            </div>
+
+            <div class="container">
+                <div class="col-md-12">
+                    <div class="text-center">
+                        <p class="font-weight-bold" style="color:#5d9fc5;">Order Management System</p>
+                    </div>
+
+                </div>
+
+
+                <div class="row">
+                    <div class="col-xl-8">
+                        <ul class="list-unstyled">
+                            <li class="text-muted">To: <span id="supName" style="color:#5d9fc5 ;">Supplier Name</span></li>
+                            <li id="supAddress" class="text-muted">address</li>
+                            <li id="SupCity" class="text-muted">City</li>
+                            <li id="supPost" class="text-muted">post</li>
+                            <li class="text-muted"><i id="supPhone" class="fas fa-phone"></i></li>
+                        </ul>
+                    </div>
+                    <div class="col-xl-4">
+                        @* <p class="text-muted">Invoice</p> *@
+                        <ul class="list-unstyled">
+                            <li class="text-muted">
+                                <i class="fas fa-circle" style="color:#84B0CA ;"></i> <span class="fw-bold">Invoice ID:</span>#123-456
+                            </li>
+                            <li class="text-muted">
+                                <i class="fas fa-circle" style="color:#84B0CA ;"></i> <span class="fw-bold">Date: </span>@ViewBag.Date
+                            </li>
+                            @* <li class="text-muted">
+                                <i class="fas fa-circle" style="color:#84B0CA ;"></i> <span class="me-1 fw-bold">Status:</span><span class="badge bg-warning text-black fw-bold">
+                                    Unpaid
+                                </span>
+                            </li> *@
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="row my-2 mx-1 justify-content-center">
+                    <table id="invoiceTable" class="table table-striped table-borderless">
+                        <thead style="background-color:#84B0CA ;" class="text-white">
+                            <tr>
+                                <th scope="col">Item</th>
+                                <th scope="col">Qty</th>
+                                <th scope="col">Unit Price</th>
+                                <th scope="col">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                        </tbody>
+
+                    </table>
+                </div>
+                <div class="row">
+                    <div class="col-xl-8">
+                        <p class="ms-3">Add additional notes and payment information</p>
+
+                    </div>
+                    <div class="col-xl-3">
+                        <ul class="list-unstyled">
+                            <li class="text-muted ms-3"><span class="text-black me-4">SubTotal</span>$1110</li>
+                            <li class="text-muted ms-3 mt-2"><span class="text-black me-4">Tax(15%)</span>$111</li>
+                        </ul>
+                        <p class="text-black float-start">
+                            <span class="text-black me-3"> Total Amount</span><span style="font-size: 25px;">$1221</span>
+                        </p>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-xl-10">
+                        <p>Thank you for your purchase</p>
+                    </div>
+                    <div class="col-xl-2">
+                        <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary text-capitalize"
+                                style="background-color:#60bdf3 ;">
+                            Pay Now
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
 
 @section Scripts {
     @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");        
     }
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#Suppliers').change(function () {
+                debugger;
+                let SupplierId = $("#Suppliers").val();
+                $('#supName').text($("#Suppliers option:selected").text()); // set supplier name on invoice
+                $.ajax({                    
+                    url: '@Url.Action("GetSupplierById", "Invoice")', 
+                    data: { "Id": SupplierId },
+                    contentType: 'application/json',
+                    type: 'GET',
+                    dataType:'json',
+                    success: function (response) {
+                        console.log(response);
+                        $('#SuppAddress').val(response.address);
+                        $('#SupAddress').val(response.address);
+                        $('#SuppCity').val(response.city);
+                        $('#SuppPost').val(response.postCode);
+                        $('#SuppPhone').val(response.phone);                        
+                        $("#SupCity").val(response.city);
+                        $('#SupPost').text(response.postcode);
+                        $('#SupPhone').text(response.phone);
+                    },
+                    error: function (error) {
+                        alert("Failure" + error)
+                    }
+                });                
+            });
+            $('#addItem').click(function () {
+                let item = $("#products option:selected").text();
+                let quantity = parseInt($('#Quantity').val());
+                let unitPrice = parseFloat($('#UnitPrice').val());
+                let amount = $('#total').val();
+                if (item != '') {
+                    var row = $('<tr> <td> ' + item + ' </td > <td> ' + quantity + '</td> <td> ' + unitPrice + ' </td> <td>' + amount + ' </td> </tr > ');
+                    $('#invoiceTable tbody').append(row);
+                    //$('#Item').val('');
+                    $('#quantity').val('');
+                    $('#unitprice').val('');
+                    $('#total').val('');
+                }
+                else {
+                    alert('Please enter item')
+                }           
+            });        
+            
+            $('#Quantity').blur(function () {
+                // let totalStock = parseInt($('#UnitsInStock').val();
+                let quantity = parseInt($('#Quantity').val());
+                let unitPrice = parseFloat($('#UnitPrice').val());
+                let total = quantity * unitPrice;
+                // let inStock= 
+                // alert('Quantity: ' + quantity);
+                // alert('Price: ' + unitPrice);
+                // alert('total: ' + total);
+                $('#UnitsInStock').val()
+                $('#total').val(total);
+            });
+
+            // $('#Quantity').blur(fun)
+        });
+    </script>
 }
+
+
