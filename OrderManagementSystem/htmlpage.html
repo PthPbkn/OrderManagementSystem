@@ -1,0 +1,117 @@
+﻿<!doctype html>
+<html>
+<head>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"
+            integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+            crossorigin="anonymous"></script>
+    <script>
+  jQuery('document').ready(function(){
+    $table2=jQuery('#table_col_total');
+      $table2.find('tbody').append('<tr><td>Total:</td></tr>');
+      var length=$table2.find('thead tr th').length;
+      for(var i=1;i<length;i++){
+        var sum=0;
+        $table2.find('tbody tr').each(function(){
+          if(!isNaN(Number(jQuery(this).find('td').eq(i).text()))){
+            sum=sum+Number(jQuery(this).find('td').eq(i).text());
+          }
+        });
+        $table2.find('tbody tr:last-child').append('<td>'+sum+'</td>');
+      }
+
+  });
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        h2 {
+            font-family: Helvetica, Arial, sans-serif;
+            color: #333;
+            margin: 20px 0;
+        }
+
+        table {
+            color: #333;
+            font-family: Helvetica, Arial, sans-serif;
+            width: 640px;
+            border-collapse: collapse;
+            border-spacing: 0;
+        }
+
+        td, th {
+            border: 1px solid transparent;
+            height: 30px;
+            transition: all 0.3s;
+        }
+
+        th {
+            background: #DFDFDF;
+            font-weight: bold;
+        }
+
+        td {
+            background: #FAFAFA;
+            text-align: center;
+        }
+
+
+        tr:nth-child(even) td {
+            background: #F1F1F1;
+        }
+
+
+        tr:nth-child(odd) td {
+            background: #FEFEFE;
+        }
+
+        tr td:hover {
+            background: #666;
+            color: #FFF;
+        }
+    </style>
+</head>
+<body>
+    <h2>Number of boys and girls in some colleges </h2>
+    <table id="table_col_total">
+        <thead>
+            <tr>
+                <th>College name</th>
+                <th>Boys</th>
+                <th>Girls</th>
+                <th>Others</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>ABC College</td>
+                <td>76</td>
+                <td>65</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>XYZ College</td>
+                <td>80</td>
+                <td>79</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>MCB College</td>
+                <td>73</td>
+                <td>89</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Holy College</td>
+                <td>89</td>
+                <td>68</td>
+                <td>2</td>
+            </tr>
+        </tbody>
+
+
+    </table>
+</body>
+</html>

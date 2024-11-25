@@ -48,6 +48,7 @@ namespace OrderManagementSystem.Controllers
         public async Task<IActionResult> GetSupplierById(int Id) 
         {
             var suppliers = await _invoiceRepository.GetSupplierById(Id);
+            //viewModel.ProductsList = await GetProducts(Id);
             return Json(suppliers);
         }       
 
@@ -65,10 +66,11 @@ namespace OrderManagementSystem.Controllers
         }
 
         // Get product details
+        [HttpGet]
         public async Task<IActionResult> GetProductDetails(int Id) 
         { 
             var details = await _invoiceRepository.GetProductsByID(Id);
-            return View(details);
+            return Json(details);
         }
     }
 }

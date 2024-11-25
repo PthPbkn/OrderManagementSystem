@@ -14,6 +14,7 @@ namespace OrderManagementSystem.Entity.ViewModels
         [Display(Name = "Product Name")]
         public string? ProductName { get; set; }
         [Display(Name = "Unit Price")]
+        
         public decimal? UnitPrice { get; set; }
         [Display(Name = "Units in Stock")]
         public short? UnitsInStock { get; set; }

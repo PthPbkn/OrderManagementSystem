@@ -6,7 +6,7 @@
 
 
 @* Supplier Card*@
-<div class="card mb-2" >
+<div class="card mb-2">
     <div class="card-header">
         Supplier
     </div>
@@ -37,7 +37,7 @@
                 <td>
                     <div class="form-group">
                         @* <label asp-for="Phone" class="control-label"></label> *@
-                        <input id="SuppPost" type="text" asp-for="PostCode" value ="PostCode" class="form-control" readonly />
+                        <input id="SuppPost" type="text" asp-for="PostCode" value="PostCode" class="form-control" readonly />
                     </div>
                 </td>
                 <td>
@@ -46,10 +46,10 @@
                         <input id="SuppPhone" type="text" asp-for="Phone" value="Phone" class="form-control" readonly />
                     </div>
                 </td>
-               @*  <td>
-                    <div class="form-group">
-                        <input type="submit" value="Select Supplier" class="btn btn-primary form-control" />
-                    </div>
+                @*  <td>
+                <div class="form-group">
+                <input type="submit" value="Select Supplier" class="btn btn-primary form-control" />
+                </div>
                 </td> *@
             </tr>
         </table>
@@ -60,61 +60,63 @@
 
 
 @* Products Card*@
-<div class="card mb-3" >
+<div class="card mb-3">
     <div class="card-header">
         Products
     </div>
     <div class="card-body">
         <table class="table table-borderless">
-           @*  <thead style="background-color:#d3dbd5 ; " class="text-muted">
-                <tr>
-                    <th scope="col">Product Name</th>
-                    <th scope="col">Unit Price</th>
-                    <th scope="col">Items In Stock</th>
-                    <th scope="col">Quantity</th>
-                </tr>
+            @*  <thead style="background-color:#d3dbd5 ; " class="text-muted">
+            <tr>
+            <th scope="col">Product Name</th>
+            <th scope="col">Unit Price</th>
+            <th scope="col">Items In Stock</th>
+            <th scope="col">Quantity</th>
+            </tr>
             </thead> *@
             <tbody>
-            <tr>
-                <td>
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <div class="form-group">
-                        <label asp-for="ProductName" class="control-label" style="font-size:12px;"></label>
-                        <select id="products" asp-for="ProductName" asp-items="@Model.ProductsList" class="form-control">
-                            <option value="0">--- Products ---</option>
-                        </select>
-                    </div>
-                </td>
-                <td>
-                    <div class="form-group">
+                <tr>
+                    <td>
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group">
+                            <label asp-for="ProductName" class="control-label" style="font-size:12px;"></label>
+                            <select id="products" asp-for="ProductName" asp-items="@Model.ProductsList" class="form-control">
+                                <option value="0">--- Products ---</option>
+                            </select>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
                             <label asp-for="UnitPrice" class="control-label" style="font-size:12px;"></label>
-                        <input id="UnitPrice" asp-for="UnitPrice" type="text" value="10.50" class="form-control" readonly />
-                    </div>
-                </td>
-                <td>
-                    <div class="form-group">
+                            <span>
+                                <input id="UnitPrice" asp-for="UnitPrice" type="text" value="0" class="form-control" readonly />
+                            </span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
                             <label asp-for="UnitsInStock" class="control-label" style="font-size:12px;"></label>
-                        <input id="UnitsInStock" asp-for="UnitsInStock" type="text" value="500" class="form-control" readonly />
-                    </div>
-                </td>
-                <td>
-                    <div class="form-group">
-                        <label asp-for="UnitsOnOrder" class="control-label" style="font-size:12px;"></label>
-                        <input id="Quantity" asp-for="UnitsOnOrder" type="text" value="0" class="form-control" />
-                    </div>
-                </td>
+                            <input id="UnitsInStock" asp-for="UnitsInStock" type="text" value="0" class="form-control" readonly />
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <label asp-for="UnitsOnOrder" class="control-label" style="font-size:12px;"></label>
+                            <input id="Quantity" asp-for="UnitsOnOrder" type="text" value="0" class="form-control" />
+                        </div>
+                    </td>
                     <td>
                         <div class="form-group">
                             <label asp-for="Amount" class="control-label" style="font-size:12px;"></label>
-                            <input id="total" asp-for="Amount" type="text" value="0.00" class="form-control" readonly/>
+                            <input id="total" asp-for="Amount" type="text" value="0.00" class="form-control" readonly />
                         </div>
                     </td>
-                <td>
-                    <div class="form-group">
+                    <td>
+                        <div class="form-group">
                             <input id="addItem" type="submit" value="+" class="btn btn-primary form-control" />
-                    </div>
-                </td>
-            </tr>
+                        </div>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>
@@ -153,10 +155,10 @@
                     <div class="col-xl-8">
                         <ul class="list-unstyled">
                             <li class="text-muted">To: <span id="supName" style="color:#5d9fc5 ;">Supplier Name</span></li>
-                            <li id="supAddress" class="text-muted">address</li>
-                            <li id="SupCity" class="text-muted">City</li>
-                            <li id="supPost" class="text-muted">post</li>
-                            <li class="text-muted"><i id="supPhone" class="fas fa-phone"></i></li>
+                            <li class="text-muted"><span id="SupAddress">address</span></li>
+                            <li class="text-muted"><span id="SupCity">address</span></li>
+                            <li class="text-muted"><span id="SupPost">post</span></li>
+                            <li class="text-muted"><i id="supPhone" class="fas fa-phone"></i><span id="SupPhone">000-00-000</span></li>
                         </ul>
                     </div>
                     <div class="col-xl-4">
@@ -169,9 +171,9 @@
                                 <i class="fas fa-circle" style="color:#84B0CA ;"></i> <span class="fw-bold">Date: </span>@ViewBag.Date
                             </li>
                             @* <li class="text-muted">
-                                <i class="fas fa-circle" style="color:#84B0CA ;"></i> <span class="me-1 fw-bold">Status:</span><span class="badge bg-warning text-black fw-bold">
-                                    Unpaid
-                                </span>
+                            <i class="fas fa-circle" style="color:#84B0CA ;"></i> <span class="me-1 fw-bold">Status:</span><span class="badge bg-warning text-black fw-bold">
+                            Unpaid
+                            </span>
                             </li> *@
                         </ul>
                     </div>
@@ -182,13 +184,12 @@
                         <thead style="background-color:#84B0CA ;" class="text-white">
                             <tr>
                                 <th scope="col">Item</th>
-                                <th scope="col">Qty</th>
                                 <th scope="col">Unit Price</th>
-                                <th scope="col">Amount</th>
+                                <th scope="col">Quantity</th>
+                                <th class="totalamt" scope="col">Amount</th>
                             </tr>
                         </thead>
                         <tbody>
-                            
                         </tbody>
 
                     </table>
@@ -196,15 +197,23 @@
                 <div class="row">
                     <div class="col-xl-8">
                         <p class="ms-3">Add additional notes and payment information</p>
-
                     </div>
                     <div class="col-xl-3">
                         <ul class="list-unstyled">
-                            <li class="text-muted ms-3"><span class="text-black me-4">SubTotal</span>$1110</li>
-                            <li class="text-muted ms-3 mt-2"><span class="text-black me-4">Tax(15%)</span>$111</li>
+                            <li class="text-muted ms-3">
+                                <span class="text-black me-4">SubTotal : </span>
+                                <span id="subTotal">
+                                    0.00
+                                </span>
+                            </li>
+                            <li class="text-muted ms-3 mt-2">
+                                <span class="text-black me-4">Tax(15%) : </span>
+                                <span id="tax">0.00</span>
+                            </li>
                         </ul>
                         <p class="text-black float-start">
-                            <span class="text-black me-3"> Total Amount</span><span style="font-size: 25px;">$1221</span>
+                            <span class="text-black me-3">Total Amount : </span>
+                            <span id="totalBill" style="font-size: 25px;">0.00</span>
                         </p>
                     </div>
                 </div>
@@ -212,6 +221,7 @@
                 <div class="row">
                     <div class="col-xl-10">
                         <p>Thank you for your purchase</p>
+                        <input id="totalAmtHidden" type="text" value="0.00" hidden />
                     </div>
                     <div class="col-xl-2">
                         <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary text-capitalize"
@@ -220,87 +230,119 @@
                         </button>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
 </div>
 
 
-
-
-
-
-
-
 @section Scripts {
     @{
-    await Html.RenderPartialAsync("_ValidationScriptsPartial");        
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script>
         $(document).ready(function () {
             $('#Suppliers').change(function () {
                 debugger;
                 let SupplierId = $("#Suppliers").val();
                 $('#supName').text($("#Suppliers option:selected").text()); // set supplier name on invoice
-                $.ajax({                    
-                    url: '@Url.Action("GetSupplierById", "Invoice")', 
+                $.ajax({
+                    url: '@Url.Action("GetSupplierById", "Invoice")',
                     data: { "Id": SupplierId },
                     contentType: 'application/json',
                     type: 'GET',
-                    dataType:'json',
+                    dataType: 'json',
                     success: function (response) {
                         console.log(response);
                         $('#SuppAddress').val(response.address);
-                        $('#SupAddress').val(response.address);
+                        $('#SupAddress').text(response.address);
                         $('#SuppCity').val(response.city);
                         $('#SuppPost').val(response.postCode);
-                        $('#SuppPhone').val(response.phone);                        
-                        $("#SupCity").val(response.city);
-                        $('#SupPost').text(response.postcode);
+                        $('#SuppPhone').val(response.phone);
+                        $('#SupCity').text(response.city);
+                        $('#SupPost').text(response.postCode);
                         $('#SupPhone').text(response.phone);
                     },
                     error: function (error) {
                         alert("Failure" + error)
                     }
-                });                
+                });
             });
+            $('#products').change(function () {
+                let productId = $('#products').val();
+                $.ajax({
+                    url: '@Url.Action("GetProductDetails", "Invoice")',
+                    data: { "Id": productId },
+                    contentType: 'application/json',
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (response) {
+                        console.log(response);
+                        $('#UnitPrice').val(response.unitPrice);
+                        $('#UnitsInStock').val(response.unitsInStock);
+                    },
+                    error: function (error) {
+                        alert("failure." + error);
+                    }
+                });
+            });
+
+
             $('#addItem').click(function () {
                 let item = $("#products option:selected").text();
-                let quantity = parseInt($('#Quantity').val());
-                let unitPrice = parseFloat($('#UnitPrice').val());
+                let qty = parseInt($('#Quantity').val());
+                let price = parseFloat($('#UnitPrice').val());
                 let amount = $('#total').val();
+                //debugger;
+                //var sum = 0;
                 if (item != '') {
-                    var row = $('<tr> <td> ' + item + ' </td > <td> ' + quantity + '</td> <td> ' + unitPrice + ' </td> <td>' + amount + ' </td> </tr > ');
+                    var row = $('<tr> <td> ' + item + ' </td > <td> ' + '£' + price + '</td> <td> ' + qty + ' </td> <td>' + '£' + amount + ' </td> </tr > ');
                     $('#invoiceTable tbody').append(row);
                     //$('#Item').val('');
-                    $('#quantity').val('');
-                    $('#unitprice').val('');
-                    $('#total').val('');
+                    $('#price').val('');
+                    $('#qty').val('');
+                    $('#total').val('0.00');
+
+                    //calculate sub total
+                    var sum = parseFloat($('#totalAmtHidden').val()) + parseFloat(amount);
+                    $('#totalAmtHidden').val(sum);
+                    $('#amount').val('');
+                    $('#subTotal').text('£' + sum);
+                    //alert('Toatal: ' + sum);
+
+                    //Calculate tax
+                    var tax = sum / 100 * 15;
+                    $('#tax').text('£' + tax);
+
+
+                    //calculate total amount
+                    var total = sum + tax;
+                    $('#totalBill').text('£' + total);
+
                 }
                 else {
                     alert('Please enter item')
-                }           
-            });        
-            
+                }
+            });
+
+            $('#Quantity').focus(function () {
+                $('#Quantity').val('');
+            });
+
             $('#Quantity').blur(function () {
-                // let totalStock = parseInt($('#UnitsInStock').val();
                 let quantity = parseInt($('#Quantity').val());
                 let unitPrice = parseFloat($('#UnitPrice').val());
                 let total = quantity * unitPrice;
-                // let inStock= 
-                // alert('Quantity: ' + quantity);
-                // alert('Price: ' + unitPrice);
-                // alert('total: ' + total);
-                $('#UnitsInStock').val()
+                let stock = parseInt($('#UnitsInStock').val());
+                let realStock = stock - quantity;
+                $('#UnitsInStock').val(realStock);
                 $('#total').val(total);
             });
-
-            // $('#Quantity').blur(fun)
         });
+
     </script>
+
 }
 
 
