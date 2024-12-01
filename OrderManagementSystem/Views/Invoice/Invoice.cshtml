@@ -6,7 +6,7 @@
 
 
 @* Supplier Card*@
-<div class="card mb-2">
+<div class="card shadow mb-5">
     <div class="card-header">
         Supplier
     </div>
@@ -60,7 +60,7 @@
 
 
 @* Products Card*@
-<div class="card mb-3">
+<div class="card shadow mb-5">
     <div class="card-header">
         Products
     </div>
@@ -124,7 +124,7 @@
 
 @* Invoice Card*@
 
-<div class="card">
+<div class="card shadow mb-5">
     <div class="card-body">
         <div class="container mb-5 mt-3">
             <div class="row d-flex align-items-baseline">
@@ -243,6 +243,7 @@
 
     <script>
         $(document).ready(function () {
+            var sum=0;
             $('#Suppliers').change(function () {
                 debugger;
                 let SupplierId = $("#Suppliers").val();
@@ -305,8 +306,9 @@
                     $('#total').val('0.00');
 
                     //calculate sub total
-                    var sum = parseFloat($('#totalAmtHidden').val()) + parseFloat(amount);
-                    $('#totalAmtHidden').val(sum);
+                    //var sum = parseFloat($('#totalAmtHidden').val()) + parseFloat(amount);
+                    sum = sum + parseFloat(amount);
+                    //$('#totalAmtHidden').val(sum);
                     $('#amount').val('');
                     $('#subTotal').text('£' + sum);
                     //alert('Toatal: ' + sum);
@@ -330,14 +332,17 @@
                 $('#Quantity').val('');
             });
 
-            $('#Quantity').blur(function () {
+            $('#Quantity').blur(function () {                
                 let quantity = parseInt($('#Quantity').val());
                 let unitPrice = parseFloat($('#UnitPrice').val());
-                let total = quantity * unitPrice;
-                let stock = parseInt($('#UnitsInStock').val());
-                let realStock = stock - quantity;
-                $('#UnitsInStock').val(realStock);
-                $('#total').val(total);
+                if (quantity) {
+                    let total = quantity * unitPrice;
+                    let stock = parseInt($('#UnitsInStock').val());
+                    let realStock = stock - quantity;
+                    $('#UnitsInStock').val(realStock);
+                    $('#total').val(total);
+                }                
+                
             });
         });
 
