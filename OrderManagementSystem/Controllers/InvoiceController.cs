@@ -27,7 +27,7 @@ namespace OrderManagementSystem.Controllers
             InvoiceViewModel viewModel = new InvoiceViewModel();
             ViewBag.Date = DateTime.Now.ToString("MMMM dd,yyyy");
             viewModel.SupplierList = await GetSuppliers();
-            viewModel.ProductsList = await GetProducts(10);
+            //await GetProducts(10);
             return View(viewModel);
         }
 
@@ -48,21 +48,25 @@ namespace OrderManagementSystem.Controllers
         public async Task<IActionResult> GetSupplierById(int Id) 
         {
             var suppliers = await _invoiceRepository.GetSupplierById(Id);
-            //viewModel.ProductsList = await GetProducts(Id);
+            //viewModel.ProductsList = await GetProducts(10);
             return Json(suppliers);
-        }       
+        }
 
-        
+
         // Populate Products name dropdown list by Supplier ID
-        public async Task<List<SelectListItem>> GetProducts(int Id) 
+        //public async Task<List<SelectListItem>> GetProducts(int Id) 
+        [HttpGet]
+        public async Task<IActionResult> GetProducts(int Id)
         {
-            var productList = new List<SelectListItem>();
-            var products = await _invoiceRepository.GetProductsBySupplierId(Id);
-            foreach (var product in products)
-            {
-                productList.Add(new SelectListItem { Text = product.ProductName, Value = product.ProductID.ToString() });
-            }
-            return productList;
+            var productList = await _invoiceRepository.GetProductsBySupplierId(Id);
+            return Json(productList);
+            //var productList = new List<SelectListItem>();
+            //var products = await _invoiceRepository.GetProductsBySupplierId(Id);
+            //foreach (var product in products)
+            //{
+            //    productList.Add(new SelectListItem { Text = product.ProductName, Value = product.ProductID.ToString() });
+            //}
+            //return productList;
         }
 
         // Get product details

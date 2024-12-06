@@ -80,7 +80,7 @@
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <div class="form-group">
                             <label asp-for="ProductName" class="control-label" style="font-size:12px;"></label>
-                            <select id="products" asp-for="ProductName" asp-items="@Model.ProductsList" class="form-control">
+                            <select id="productsMenu" asp-for="ProductName" asp-items="@Model.ProductsList" class="form-control">
                                 <option value="0">--- Products ---</option>
                             </select>
                         </div>
@@ -123,6 +123,8 @@
 </div>
 
 @* Invoice Card*@
+
+<p id="prod"> hello</p>
 
 <div class="card shadow mb-5">
     <div class="card-body">
@@ -236,6 +238,8 @@
 </div>
 
 
+
+
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
@@ -245,17 +249,17 @@
         $(document).ready(function () {
             var sum=0;
             $('#Suppliers').change(function () {
-                debugger;
-                let SupplierId = $("#Suppliers").val();
+                //debugger;                
+                var supplierId = $("#Suppliers").val();
                 $('#supName').text($("#Suppliers option:selected").text()); // set supplier name on invoice
                 $.ajax({
                     url: '@Url.Action("GetSupplierById", "Invoice")',
-                    data: { "Id": SupplierId },
+                    data: { "Id": supplierId },
                     contentType: 'application/json',
                     type: 'GET',
                     dataType: 'json',
                     success: function (response) {
-                        console.log(response);
+                        //console.log(response);
                         $('#SuppAddress').val(response.address);
                         $('#SupAddress').text(response.address);
                         $('#SuppCity').val(response.city);
@@ -268,10 +272,34 @@
                     error: function (error) {
                         alert("Failure" + error)
                     }
-                });
+                });                
+                $.ajax({
+                    url: '@Url.Action("GetProducts", "Invoice")',
+                    data: { "Id": supplierId },
+                    contentType: 'application/json',
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {  
+                        console.log(data);
+                        $('#productsMenu').empty();
+                        var dummy = "<option value=0> --- Products --- </option>"
+                        $(dummy).appendTo('#productsMenu');
+                        $.each(data, function (i, obj) {
+                            //console.log(obj.productName);
+                            var menuItems = "<option value=" + obj.productID + ">" + obj.productName + "</option>";
+                            //console.log(menuItems);
+                            $(menuItems).appendTo('#productsMenu');
+                        });
+                    },
+                    error: function (error) {
+                        alert("Error: " + error);
+                    }
+                });             
             });
-            $('#products').change(function () {
-                let productId = $('#products').val();
+
+
+            $('#productsMenu').change(function () {
+                let productId = $('#productsMenu').val();
                 $.ajax({
                     url: '@Url.Action("GetProductDetails", "Invoice")',
                     data: { "Id": productId },
@@ -291,7 +319,7 @@
 
 
             $('#addItem').click(function () {
-                let item = $("#products option:selected").text();
+                let item = $("#productsMenu option:selected").text();
                 let qty = parseInt($('#Quantity').val());
                 let price = parseFloat($('#UnitPrice').val());
                 let amount = $('#total').val();
@@ -300,18 +328,14 @@
                 if (item != '') {
                     var row = $('<tr> <td> ' + item + ' </td > <td> ' + '£' + price + '</td> <td> ' + qty + ' </td> <td>' + '£' + amount + ' </td> </tr > ');
                     $('#invoiceTable tbody').append(row);
-                    //$('#Item').val('');
                     $('#price').val('');
                     $('#qty').val('');
                     $('#total').val('0.00');
 
                     //calculate sub total
-                    //var sum = parseFloat($('#totalAmtHidden').val()) + parseFloat(amount);
                     sum = sum + parseFloat(amount);
-                    //$('#totalAmtHidden').val(sum);
                     $('#amount').val('');
                     $('#subTotal').text('£' + sum);
-                    //alert('Toatal: ' + sum);
 
                     //Calculate tax
                     var tax = sum / 100 * 15;
@@ -324,7 +348,7 @@
 
                 }
                 else {
-                    alert('Please enter item')
+                    alert('Please select an item')
                 }
             });
 
@@ -341,8 +365,7 @@
                     let realStock = stock - quantity;
                     $('#UnitsInStock').val(realStock);
                     $('#total').val(total);
-                }                
-                
+                }
             });
         });
 
