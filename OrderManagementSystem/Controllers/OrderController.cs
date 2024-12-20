@@ -8,37 +8,34 @@ using OrderManagementSystem.Services.Repository;
 
 namespace OrderManagementSystem.Controllers
 {
-    public class InvoiceController : Controller
+    public class OrderController : Controller
     {
         private readonly ISupplierRepository _supplierRepository;
         private readonly IInvoiceRepository _invoiceRepository;
         private readonly IProductRepository _productRepository;
         private readonly IToastNotification _toastNotification;
+        private readonly IOrderRepository _orderRepository;
 
-        public InvoiceController(ISupplierRepository supplierRepository,
+        public OrderController(ISupplierRepository supplierRepository,
             IInvoiceRepository invoiceRepository,
             IProductRepository productRepository,
-            IToastNotification toastNotification)
+            IToastNotification toastNotification,
+            IOrderRepository orderRepository)
         {
             
             this._supplierRepository = supplierRepository;
             this._invoiceRepository = invoiceRepository;
             this._productRepository = productRepository;
             this._toastNotification = toastNotification;
+            this._orderRepository = orderRepository;
         }
-        //public async Task<IActionResult> Invoice()
-        //{
-        //    InvoiceViewModel viewModel = new InvoiceViewModel();
-        //    ViewBag.Date = DateTime.Now.ToString("MMMM dd,yyyy");
-        //    viewModel.SupplierList = await GetSuppliers();
-        //    return View(viewModel);
-        //}
+       
 
         // Populate Supplier Name dropdown list
         public async Task<List<SelectListItem>> GetSuppliers()
         {
             var suppliersList = new List<SelectListItem>();
-            var suppliers = await _invoiceRepository.GetSuppliers();
+            var suppliers = await _orderRepository.GetSuppliers();
             foreach (var supplier in suppliers)
             {
                 suppliersList.Add(new SelectListItem { Text = supplier.SupplierName, Value = supplier.SupplierId.ToString() });
@@ -50,7 +47,7 @@ namespace OrderManagementSystem.Controllers
         //Get supplier details by Supplier ID
         public async Task<IActionResult> GetSupplierById(int Id) 
         {
-            var suppliers = await _invoiceRepository.GetSupplierById(Id);
+            var suppliers = await _orderRepository.GetSupplierById(Id);
             //viewModel.ProductsList = await GetProducts(10);
             return Json(suppliers);
         }
@@ -60,7 +57,7 @@ namespace OrderManagementSystem.Controllers
         [HttpGet]
         public async Task<IActionResult> GetProducts(int Id)
         {
-            var productList = await _invoiceRepository.GetProductsBySupplierId(Id);
+            var productList = await _orderRepository.GetProductsBySupplierId(Id);
             return Json(productList);
             
         }
@@ -69,34 +66,36 @@ namespace OrderManagementSystem.Controllers
         [HttpGet]
         public async Task<IActionResult> GetProductDetails(int Id) 
         { 
-            var details = await _invoiceRepository.GetProductsByID(Id);
+            var details = await _orderRepository.GetProductsByID(Id);
             return Json(details);
         }
 
         [HttpGet]
         public async Task<IActionResult> Create()
         {
-            InvoiceViewModel viewModel = new InvoiceViewModel();
+            //InvoiceViewModel viewModel = new InvoiceViewModel();
+            OrderViewModel viewModel = new OrderViewModel();
             ViewBag.Date = DateTime.Now.ToString("MMMM dd,yyyy");
             viewModel.SupplierList = await GetSuppliers();
             return View(viewModel);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(InvoiceViewModel model)
+        public async Task<IActionResult> Create(OrderViewModel model)
         {
-            Invoice invoice = new()
+            //Invoice invoice = new()
+            Order order = new()
             {
-                InvoiceId = model.InvoiceId,
-                ProductId = model.ProductID,
-                SupplierId = model.SupplierId,
-                UnitsOrdered = model.UnitsOnOrder,
-                Amount = model.Amount,
-                SubTotal = model.SubTotal,
-                Tax=model.Tax,
-                TotalAmt = model.TotalAmt,
+                InvoiceID = model.InvoiceID,
+                //ProductID = model.ProductID,
+                //SupplierID = model.SupplierId,
+                //UnitsOrdered = model.Quantity,
+                //Amount = model.ItemTotal,
+                //SubTotal = model.SubTotal,
+                //Tax=model.Tax,
+                //TotalAmt = model.TotalAmt,
             };
-            var result = await _invoiceRepository.AddInvoice(invoice);
+            var result = await _orderRepository.AddInvoice(order);
             if (result == 1)
             {
                 _toastNotification.AddSuccessToastMessage("Invoice created successfully");
@@ -108,7 +107,7 @@ namespace OrderManagementSystem.Controllers
 
         public async Task<IActionResult> Index() 
         {
-            var invoice = await _invoiceRepository.GetInvoices();
+            var invoice = await _orderRepository.GetInvoices();
             return View(invoice);
             
         }

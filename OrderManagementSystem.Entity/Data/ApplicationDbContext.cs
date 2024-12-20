@@ -25,6 +25,7 @@ namespace OrderManagementSystem.Entity.Data
         public DbSet<Product> ProductSet { get; set; }
         public DbSet<Supplier> SupplierSet { get; set; }
         public DbSet<Invoice> InvoiceSet { get; set; }
+        public DbSet<Order> OrderSet { get; set; }
 
         
 
