@@ -2,10 +2,16 @@
 
 @{
     ViewData["Title"] = "Invoice";
+    var itemTotalAmt = 0;
+    var subTotal = 0;
+    var tax = 0;
+    var totalAmt = 0;
 }
 
 
 @* Supplier Card*@
+
+<form asp-action="Invoice" method="post" class="form-inline" enctype="multipart/form-data">
 <div class="card shadow mb-5">
     <div class="card-header">
         Supplier
@@ -17,7 +23,7 @@
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group">
                         @* <label asp-for="SupplierName" class="control-label"></label> *@
-                        <select asp-for="SupplierName" asp-items="@Model.SupplierList" class="form-control" id="Suppliers">
+                        <select asp-for="SupplierId" asp-items="@Model.SupplierList" class="form-control" id="Suppliers">
                             <option value="0"> --- Select Supplier --- </option>
                         </select>
                     </div>
@@ -66,23 +72,16 @@
     </div>
     <div class="card-body">
         <table class="table table-borderless">
-            @*  <thead style="background-color:#d3dbd5 ; " class="text-muted">
-            <tr>
-            <th scope="col">Product Name</th>
-            <th scope="col">Unit Price</th>
-            <th scope="col">Items In Stock</th>
-            <th scope="col">Quantity</th>
-            </tr>
-            </thead> *@
             <tbody>
                 <tr>
                     <td>
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <div class="form-group">
                             <label asp-for="ProductName" class="control-label" style="font-size:12px;"></label>
-                            <select id="productsMenu" asp-for="ProductName" asp-items="@Model.ProductsList" class="form-control">
+                            <select id="productsMenu" asp-for="ProductID" asp-items="@Model.ProductsList" class="form-control">
                                 <option value="0">--- Products ---</option>
                             </select>
+                           
                         </div>
                     </td>
                     <td>
@@ -108,12 +107,12 @@
                     <td>
                         <div class="form-group">
                             <label asp-for="Amount" class="control-label" style="font-size:12px;"></label>
-                            <input id="total" asp-for="Amount" type="text" value="0.00" class="form-control" readonly />
+                            <input id="total" asp-for="Amount" type="text" value="@itemTotalAmt" class="form-control" readonly />
                         </div>
                     </td>
                     <td>
                         <div class="form-group">
-                            <input id="addItem" type="submit" value="+" class="btn btn-primary form-control" />
+                            <input id="addItem" type="button" value="+" class="btn btn-primary form-control" />
                         </div>
                     </td>
                 </tr>
@@ -124,7 +123,6 @@
 
 @* Invoice Card*@
 
-<p id="prod"> hello</p>
 
 <div class="card shadow mb-5">
     <div class="card-body">
@@ -132,6 +130,7 @@
             <div class="row d-flex align-items-baseline">
                 <div class="col-xl-9">
                     <p style="color: #7e8d9f;font-size: 20px;"><strong>ID: #10001246</strong></p>
+                        <input id="InvoiceId" asp-for="InvoiceId" value="" hidden />
                 </div>
                 <div class="col-xl-3 float-end">
                     <a data-mdb-ripple-init class="btn btn-light text-capitalize border-0" data-mdb-ripple-color="dark">
@@ -204,18 +203,21 @@
                         <ul class="list-unstyled">
                             <li class="text-muted ms-3">
                                 <span class="text-black me-4">SubTotal : </span>
-                                <span id="subTotal">
-                                    0.00
+                                <span id="subTotal" >
+                                    @subTotal
+                                        <input id="subTotalID" value="@subTotal" asp-for="SubTotal" hidden />
                                 </span>
                             </li>
                             <li class="text-muted ms-3 mt-2">
                                 <span class="text-black me-4">Tax(15%) : </span>
                                 <span id="tax">0.00</span>
+                                    <input id="TaxID" asp-for="Tax" value="@tax" hidden />
                             </li>
                         </ul>
                         <p class="text-black float-start">
                             <span class="text-black me-3">Total Amount : </span>
                             <span id="totalBill" style="font-size: 25px;">0.00</span>
+                                <input id="TotalAmtID" asp-for="TotalAmt" value="@totalAmt" hidden />
                         </p>
                     </div>
                 </div>
@@ -223,11 +225,10 @@
                 <div class="row">
                     <div class="col-xl-10">
                         <p>Thank you for your purchase</p>
-                        <input id="totalAmtHidden" type="text" value="0.00" hidden />
                     </div>
                     <div class="col-xl-2">
-                        <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary text-capitalize"
-                                style="background-color:#60bdf3 ;">
+                            <button value="Invoice" type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary text-capitalize"
+                                style="background-color:#60bdf3;">
                             Pay Now
                         </button>
                     </div>
@@ -237,7 +238,7 @@
     </div>
 </div>
 
-
+</form>
 
 
 @section Scripts {

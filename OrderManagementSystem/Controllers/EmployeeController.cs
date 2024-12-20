@@ -46,14 +46,13 @@ namespace OrderManagementSystem.Controllers
         }
         [HttpPost]
         public async Task<IActionResult> Create(Employee emp) 
-        {
+        {           
             string fileName = string.Empty;
             if (ModelState.IsValid) 
             {
                 if(emp.file != null)
                 {
                     string path = Path.Combine(_env.WebRootPath, "Images");
-                    //can not create image with EmployeeID as ID not assigned when creating new record.!
                     fileName = Guid.NewGuid().ToString() + ".jpeg";
                     string imagePath = Path.Combine(path,fileName);
                     using(var fileStream = new FileStream(imagePath,FileMode.Create))

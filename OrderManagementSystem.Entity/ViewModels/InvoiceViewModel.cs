@@ -20,7 +20,7 @@ namespace OrderManagementSystem.Entity.ViewModels
         public short? UnitsInStock { get; set; }
         [Display(Name ="Units on Order")]
         public int? UnitsOnOrder { get; set; }
-        public int? Amount { get; set; }
+        public string? Amount { get; set; }
         public int SupplierId { get; set; }
         [Display(Name = "Supplier Name")]
         public string? SupplierName { get; set; }
@@ -28,6 +28,14 @@ namespace OrderManagementSystem.Entity.ViewModels
         public string? City { get; set; }
         public string? PostCode { get; set; }
         public string? Phone { get; set; }
+        public int? InvoiceId { get; set; }
+        public string? SubTotal { get; set; }
+        public string? Tax { get; set; }
+        public string? TotalAmt { get; set; }
+
+
+
+
 
         public List<SelectListItem>? SupplierList { get; set; }
         public List<SelectListItem>? ProductsList { get; set; }

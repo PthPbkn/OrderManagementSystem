@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using NToastNotify;
 using OrderManagementSystem.Entity.Data;
 using OrderManagementSystem.Entity.Models;
 using OrderManagementSystem.Entity.ViewModels;
@@ -12,24 +13,26 @@ namespace OrderManagementSystem.Controllers
         private readonly ISupplierRepository _supplierRepository;
         private readonly IInvoiceRepository _invoiceRepository;
         private readonly IProductRepository _productRepository;
+        private readonly IToastNotification _toastNotification;
 
         public InvoiceController(ISupplierRepository supplierRepository,
             IInvoiceRepository invoiceRepository,
-            IProductRepository productRepository)
+            IProductRepository productRepository,
+            IToastNotification toastNotification)
         {
             
             this._supplierRepository = supplierRepository;
             this._invoiceRepository = invoiceRepository;
             this._productRepository = productRepository;
+            this._toastNotification = toastNotification;
         }
-        public async Task<IActionResult> Invoice()
-        {
-            InvoiceViewModel viewModel = new InvoiceViewModel();
-            ViewBag.Date = DateTime.Now.ToString("MMMM dd,yyyy");
-            viewModel.SupplierList = await GetSuppliers();
-            //await GetProducts(10);
-            return View(viewModel);
-        }
+        //public async Task<IActionResult> Invoice()
+        //{
+        //    InvoiceViewModel viewModel = new InvoiceViewModel();
+        //    ViewBag.Date = DateTime.Now.ToString("MMMM dd,yyyy");
+        //    viewModel.SupplierList = await GetSuppliers();
+        //    return View(viewModel);
+        //}
 
         // Populate Supplier Name dropdown list
         public async Task<List<SelectListItem>> GetSuppliers()
@@ -54,19 +57,12 @@ namespace OrderManagementSystem.Controllers
 
 
         // Populate Products name dropdown list by Supplier ID
-        //public async Task<List<SelectListItem>> GetProducts(int Id) 
         [HttpGet]
         public async Task<IActionResult> GetProducts(int Id)
         {
             var productList = await _invoiceRepository.GetProductsBySupplierId(Id);
             return Json(productList);
-            //var productList = new List<SelectListItem>();
-            //var products = await _invoiceRepository.GetProductsBySupplierId(Id);
-            //foreach (var product in products)
-            //{
-            //    productList.Add(new SelectListItem { Text = product.ProductName, Value = product.ProductID.ToString() });
-            //}
-            //return productList;
+            
         }
 
         // Get product details
@@ -75,6 +71,46 @@ namespace OrderManagementSystem.Controllers
         { 
             var details = await _invoiceRepository.GetProductsByID(Id);
             return Json(details);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Create()
+        {
+            InvoiceViewModel viewModel = new InvoiceViewModel();
+            ViewBag.Date = DateTime.Now.ToString("MMMM dd,yyyy");
+            viewModel.SupplierList = await GetSuppliers();
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(InvoiceViewModel model)
+        {
+            Invoice invoice = new()
+            {
+                InvoiceId = model.InvoiceId,
+                ProductId = model.ProductID,
+                SupplierId = model.SupplierId,
+                UnitsOrdered = model.UnitsOnOrder,
+                Amount = model.Amount,
+                SubTotal = model.SubTotal,
+                Tax=model.Tax,
+                TotalAmt = model.TotalAmt,
+            };
+            var result = await _invoiceRepository.AddInvoice(invoice);
+            if (result == 1)
+            {
+                _toastNotification.AddSuccessToastMessage("Invoice created successfully");
+                return RedirectToAction("Index");
+            }
+            _toastNotification.AddErrorToastMessage("Invoice not saved!");
+            return View(Index);
+        }
+
+        public async Task<IActionResult> Index() 
+        {
+            var invoice = await _invoiceRepository.GetInvoices();
+            return View(invoice);
+            
         }
     }
 }

@@ -73,5 +73,19 @@ namespace OrderManagementSystem.Services.Repository
                                   }).FirstAsync();
             return products;
         }
+
+
+        public async Task<int> AddInvoice(Invoice invoice)
+        {
+            _context.InvoiceSet.Add(invoice);
+            int result = await _context.SaveChangesAsync();
+            return result;
+            
+        }
+
+        public async Task<List<Invoice>> GetInvoices()
+        {
+            return await _context.InvoiceSet.ToListAsync();
+        }
     }
 }
