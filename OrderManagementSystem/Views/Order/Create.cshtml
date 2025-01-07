@@ -97,8 +97,8 @@
                         <td>
                             <div class="form-group">
                                 <label asp-for="ItemTotal" class="control-label" style="font-size:12px;"></label>
-                                <input id="total" type="text" value="" class="form-control" />
-                                <input id="totalID" asp-for="ItemTotal" type="text" value=""/>
+                                <input id="total" type="text" value="" class="form-control" readonly/>
+                                @* <input id="totalID" asp-for="ItemTotal" type="text" value=""/> *@
                             </div>
                         </td>
                         <td>
@@ -175,7 +175,8 @@
                         <table id="invoiceTable" class="table table-striped table-borderless">
                             <thead style="background-color:#84B0CA ;" class="text-white">
                                 <tr>
-                                    <th scope="col">Item</th>
+                                    <th scope="col">Item ID</th>
+                                    <th scope="col">Product Name</th>
                                     <th scope="col">Unit Price</th>
                                     <th scope="col">Quantity</th>
                                     <th class="totalamt" scope="col">Amount</th>
@@ -198,17 +199,17 @@
                                         0.00
                                     </span>
                                 </li>
-                                <li class="text-muted ms-3">
+                                @* <li class="text-muted ms-3">
                                     <input id="subTotalID" value="" asp-for="ItemTotal"/>
-                                </li>
+                                </li> *@
                                 <li class="text-muted ms-3 mt-2">
                                     <span class="text-black me-4">Tax(15%) : </span>
                                     <span id="tax">0.00</span>
-                                    <input id="TaxID" asp-for="Tax" value="" />
+                                    @* <input id="TaxID" asp-for="Tax" value="" /> *@
                                 </li>
-                                <li>
+                                @* <li>
                                     <input id="TotalAmtID" asp-for="TotalAmount" value=""/>
-                                </li>
+                                </li> *@
                             </ul>
                             <p class="text-black float-start">
                                 <span class="text-black me-3">Total Amount : </span>
@@ -223,7 +224,7 @@
                             <p>Thank you for your purchase</p>
                         </div>
                         <div class="col-xl-2">
-                            <button value="Create" type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary text-capitalize"
+                            <button  id="invoiceBttn" value="" type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary text-capitalize"
                                     style="background-color:#60bdf3;">
                                 Create
                             </button>
@@ -278,7 +279,7 @@
                     type: 'GET',
                     dataType: 'json',
                     success: function (data) {
-                        console.log(data);
+                        //console.log(data);
                         $('#productsMenu').empty();
                         var dummy = "<option value=0> --- Products --- </option>"
                         $(dummy).appendTo('#productsMenu');
@@ -318,6 +319,8 @@
 
             $('#addItem').click(function () {
                 let item = $("#productsMenu option:selected").text();
+                let itemID = $("#productsMenu option:selected").val();
+                //alert(item + ':' + itemID);
                 let qty = parseInt($('#Quantity').val());
                 let price = parseFloat($('#UnitPrice').val());
                 //let amount = $('#total').val();
@@ -326,7 +329,7 @@
                 //debugger;
                 //var sum = 0;
                 if (item != '') {
-                    var row = $('<tr> <td> ' + item + ' </td > <td> ' + '£' + price + '</td> <td> ' + qty + ' </td> <td>' + formatWithSymbol.format(itemTotal) + ' </td> </tr > ');
+                    var row = $('<tr> <td id="itemID"> ' + itemID + ' </td > <td> ' + item + ' </td > <td id="itemPrice"> ' + price + '</td> <td id="itemQty"> ' + qty + ' </td> <td id="itemTotl">' + itemTotal + ' </td> </tr > ');
                     $('#invoiceTable tbody').append(row);
                     $('#price').val('');
                     $('#qty').val('');
@@ -335,22 +338,22 @@
                     //calculate sub total
                     sum = sum + parseFloat(itemTotal);
                     //$('#amount').val('');
-                    $('#subTotal').text(formatWithSymbol.format(sum));
+                    $('#subTotal').text(sum);
                     $('#subTotalID').val(format.format(sum));
                     //subTotal = sum;
                     //console.log('sum: ' + amount);
 
                     //Calculate tax
                     var tax = sum / 100 * 15;
-                    $('#tax').text(formatWithSymbol.format(tax));
+                    $('#tax').text(tax);
                     $('#TaxID').val(format.format(tax));
-                    alert('tax: ' + (format.format(tax)));
+                    //alert('tax: ' + (format.format(tax)));
 
 
                     //calculate total amount
                     var total = sum + parseFloat(tax);
-                    $('#totalBill').text(formatWithSymbol.format(total));
-                    $('#TotalAmtID').val(format.format(total).replace('GBP', '').trim());
+                    $('#totalBill').text(total);
+                    //$('#TotalAmtID').val(format.format(total).replace('GBP', '').trim());
                     console.log('Total: ' + total);
 
                 }
@@ -375,6 +378,70 @@
                     
                 }
             });
+
+
+            $('#invoiceBttn').click(function () {
+                //  alert("click");
+
+                const order = {
+                    CustomerID: parseInt(1050),
+                    EmployeeID: 10050,
+                    InvoiceID: parseInt(1000523),
+                    OrderDate: "05/01/2025",
+                    SubTotal: parseFloat($('#subTotal').text()),
+                    Tax: parseFloat($("#tax").text()),
+                    Discount: parseFloat(1.99),
+                    TotalAmount: parseFloat($('#totalBill').text()),
+                };
+                console.log(order);
+
+
+                const orderDetails = [];
+                $('#invoiceTable > tbody > tr').each(function () {
+                    const details = {
+                        ProductID: $(this).find('#itemID').html(),
+                        CustomerID: parseInt(1050),
+                        InvoiceID: parseInt(1000523),
+                        OrderDate: "05/01/2025",
+                        UnitPrice: $(this).find('#itemPrice').html(),
+                        Quantity: $(this).find("#itemQty").html(),
+                        ItemTotal: $(this).find("#itemTotl").html(),
+                    };
+                    orderDetails.push(details);
+                    //console.log(details);
+                    console.log(orderDetails);
+
+                });
+                //debugger;
+                $.ajax({
+                    url: '@Url.Action("Create", "Order")',
+                    contentType: 'application/json',
+                    //contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    type: 'POST',
+                    //data: JSON.stringify({ Order: order}, OrderDetails: orderDetails }),
+                    //data: JSON.stringify({Order:order,OrderDetails: orderDetails}),
+                    data: { "Order": order, "OrderDetails": orderDetails },
+                    success: function (response) {
+                        if (response.success) {
+                            alert(response.message);
+                            location.reload();
+                        } else {
+                            alert(response.message);
+                        }
+                    },
+                    error: function () {
+                        alert("Failed to save order.");
+                    },
+                });
+
+            });
+
+
+            
+
+
+
             let format = new Intl.NumberFormat({
                 style: 'currency',
                 currency: 'GBP',
@@ -387,6 +454,8 @@
                 currency:'GBP',
                 minimumFractionDigits: 2,
             });
+
+
         });
     </script>
 

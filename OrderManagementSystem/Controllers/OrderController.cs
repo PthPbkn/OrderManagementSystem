@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis;
 using NToastNotify;
 using OrderManagementSystem.Entity.Data;
 using OrderManagementSystem.Entity.Models;
@@ -15,12 +16,14 @@ namespace OrderManagementSystem.Controllers
         private readonly IProductRepository _productRepository;
         private readonly IToastNotification _toastNotification;
         private readonly IOrderRepository _orderRepository;
+        private readonly IOrderDetailsRepository _orderDetailsRepository;
 
         public OrderController(ISupplierRepository supplierRepository,
             IInvoiceRepository invoiceRepository,
             IProductRepository productRepository,
             IToastNotification toastNotification,
-            IOrderRepository orderRepository)
+            IOrderRepository orderRepository,
+            IOrderDetailsRepository orderDetailsRepository)
         {
             
             this._supplierRepository = supplierRepository;
@@ -28,6 +31,7 @@ namespace OrderManagementSystem.Controllers
             this._productRepository = productRepository;
             this._toastNotification = toastNotification;
             this._orderRepository = orderRepository;
+            this._orderDetailsRepository = orderDetailsRepository;
         }
        
 
@@ -81,34 +85,62 @@ namespace OrderManagementSystem.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(OrderViewModel model)
+        public async Task<IActionResult> Create(OrderViewModel viewModel)
         {
-            //Invoice invoice = new()
-            Order order = new()
-            {
-                InvoiceID = model.InvoiceID,
-                //ProductID = model.ProductID,
-                //SupplierID = model.SupplierId,
-                //UnitsOrdered = model.Quantity,
-                //Amount = model.ItemTotal,
-                //SubTotal = model.SubTotal,
-                //Tax=model.Tax,
-                //TotalAmt = model.TotalAmt,
-            };
-            var result = await _orderRepository.AddInvoice(order);
-            if (result == 1)
-            {
-                _toastNotification.AddSuccessToastMessage("Invoice created successfully");
-                return RedirectToAction("Index");
-            }
-            _toastNotification.AddErrorToastMessage("Invoice not saved!");
-            return View(Index);
+            //if (ModelState.IsValid) 
+            //{
+                Order order = new();
+                var result = await _orderRepository.AddInvoice(order);
+                if (viewModel.OrderDetails != null) 
+                {
+                    foreach (var items in viewModel.OrderDetails)
+                    {
+                        items.OrderID = order.OrderID;
+                        await _orderDetailsRepository.AddInvoiceDetails(items);
+                    }                
+                }
+                
+                if (result == 1)
+                {
+                    _toastNotification.AddSuccessToastMessage("Invoice created");
+                }
+
+            //}
+            return Json(new { success = false, message = "Failed to save the order." });
+            //return View();
         }
+
+
+        //[HttpPost]
+        //public async Task<IActionResult> Create(OrderViewModel model)
+        //{
+        //    //Invoice invoice = new()
+        //    Order order = new()
+        //    {
+        //        InvoiceID = model.InvoiceID,
+        //        //ProductID = model.ProductID,
+        //        //SupplierID = model.SupplierId,
+        //        //UnitsOrdered = model.Quantity,
+        //        //Amount = model.ItemTotal,
+        //        //SubTotal = model.SubTotal,
+        //        //Tax=model.Tax,
+        //        //TotalAmt = model.TotalAmt,
+        //    };
+        //    var result = await _orderRepository.AddInvoice(order);
+        //    if (result == 1)
+        //    {
+        //        _toastNotification.AddSuccessToastMessage("Invoice created successfully");
+        //        return RedirectToAction("Index");
+        //    }
+        //    _toastNotification.AddErrorToastMessage("Invoice not saved!");
+        //    return View(Index);
+        //}
 
         public async Task<IActionResult> Index() 
         {
-            var invoice = await _orderRepository.GetInvoices();
-            return View(invoice);
+            //var invoice = await _orderRepository.GetInvoices();
+            //return View(invoice);
+            return View();
             
         }
     }

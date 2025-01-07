@@ -32,7 +32,7 @@ namespace OrderManagementSystem.Entity.ViewModels
         public int? InvoiceId { get; set; }
         public string? SubTotal { get; set; }
         public string? Tax { get; set; }
-        public string? TotalAmt { get; set; }
+        public float? TotalAmt { get; set; }
 
 
 
