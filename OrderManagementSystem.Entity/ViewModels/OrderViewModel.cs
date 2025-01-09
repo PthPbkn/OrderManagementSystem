@@ -25,20 +25,25 @@ namespace OrderManagementSystem.Entity.ViewModels
         public decimal? UnitPrice { get; set; }
 
         [Display(Name = "Units in Stock")]
-        public short? UnitsInStock { get; set; }
+        public int? UnitsInStock { get; set; }
         public int? Quantity { get; set; }
-        public decimal? ItemTotal { get; set; }
-        public decimal? SubTotal { get; set; }
-        public decimal? Discount { get; set; }
+        public float? ItemTotal { get; set; }
+        public float? SubTotal { get; set; }
+        public float? Discount { get; set; }
         public float? Tax { get; set; }
         public float? TotalAmount { get; set; }
         public string? Address { get; set; }
         public string? City { get; set; }
         public string? PostCode { get; set; }
         public string? Phone { get; set; }
+        [Display(Name = "Supplier")]
         public string? SupplierName { get; set; }
+
+        [Display(Name = "Customer")]
+        public string? CustomerName { get; set; }
         public List<SelectListItem>? SupplierList { get; set; }
-        public List<SelectListItem>? ProductsList { get; set; }
+        public List<SelectListItem>? ProductsList { get; set; }        
+        public List<SelectListItem>? CustomersList { get; set; }
         public Order? Order { get; set; }
         public List<OrderDetail>? OrderDetails { get; set; }
     }

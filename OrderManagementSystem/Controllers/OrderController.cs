@@ -4,6 +4,7 @@ using Microsoft.CodeAnalysis;
 using NToastNotify;
 using OrderManagementSystem.Entity.Data;
 using OrderManagementSystem.Entity.Models;
+using OrderManagementSystem.Entity.Security;
 using OrderManagementSystem.Entity.ViewModels;
 using OrderManagementSystem.Services.Repository;
 
@@ -12,26 +13,26 @@ namespace OrderManagementSystem.Controllers
     public class OrderController : Controller
     {
         private readonly ISupplierRepository _supplierRepository;
-        private readonly IInvoiceRepository _invoiceRepository;
         private readonly IProductRepository _productRepository;
         private readonly IToastNotification _toastNotification;
         private readonly IOrderRepository _orderRepository;
         private readonly IOrderDetailsRepository _orderDetailsRepository;
+        private readonly ICustomerRepository _customerRepository;
 
         public OrderController(ISupplierRepository supplierRepository,
-            IInvoiceRepository invoiceRepository,
             IProductRepository productRepository,
             IToastNotification toastNotification,
             IOrderRepository orderRepository,
-            IOrderDetailsRepository orderDetailsRepository)
+            IOrderDetailsRepository orderDetailsRepository,
+            ICustomerRepository customerRepository)
         {
             
             this._supplierRepository = supplierRepository;
-            this._invoiceRepository = invoiceRepository;
             this._productRepository = productRepository;
             this._toastNotification = toastNotification;
             this._orderRepository = orderRepository;
             this._orderDetailsRepository = orderDetailsRepository;
+            this._customerRepository = customerRepository;
         }
        
 
@@ -46,8 +47,19 @@ namespace OrderManagementSystem.Controllers
             }
             return suppliersList;
         }
-        [HttpGet]
 
+        public async Task<List<SelectListItem>> GetCustomers()
+        {
+            var customersList = new List<SelectListItem>();
+            var customers = await _customerRepository.GetAllCustomers();
+            foreach (var customer in customers)
+            {
+                customersList.Add(new SelectListItem { Text = customer.CustomerName, Value = customer.CustomerId.ToString() });
+            }
+            return customersList;
+        }
+
+        [HttpGet]
         //Get supplier details by Supplier ID
         public async Task<IActionResult> GetSupplierById(int Id) 
         {
@@ -79,8 +91,16 @@ namespace OrderManagementSystem.Controllers
         {
             //InvoiceViewModel viewModel = new InvoiceViewModel();
             OrderViewModel viewModel = new OrderViewModel();
+            ApplicationUser applicationUser = new ApplicationUser();  //...........?
             ViewBag.Date = DateTime.Now.ToString("MMMM dd,yyyy");
             viewModel.SupplierList = await GetSuppliers();
+            viewModel.CustomersList = await GetCustomers();
+            //viewModel.UserName = applicationUser.UserName; // ..............?
+            //if (User.Identity.IsAuthenticated)
+            //{
+            //    var user = User.Identity.Name;
+            //}
+
             return View(viewModel);
         }
 
@@ -96,6 +116,7 @@ namespace OrderManagementSystem.Controllers
                     foreach (var items in viewModel.OrderDetails)
                     {
                         items.OrderID = order.OrderID;
+                        //items.InvoiceID = order.InvoiceID;
                         await _orderDetailsRepository.AddInvoiceDetails(items);
                     }                
                 }
@@ -109,38 +130,11 @@ namespace OrderManagementSystem.Controllers
             return Json(new { success = false, message = "Failed to save the order." });
             //return View();
         }
-
-
-        //[HttpPost]
-        //public async Task<IActionResult> Create(OrderViewModel model)
-        //{
-        //    //Invoice invoice = new()
-        //    Order order = new()
-        //    {
-        //        InvoiceID = model.InvoiceID,
-        //        //ProductID = model.ProductID,
-        //        //SupplierID = model.SupplierId,
-        //        //UnitsOrdered = model.Quantity,
-        //        //Amount = model.ItemTotal,
-        //        //SubTotal = model.SubTotal,
-        //        //Tax=model.Tax,
-        //        //TotalAmt = model.TotalAmt,
-        //    };
-        //    var result = await _orderRepository.AddInvoice(order);
-        //    if (result == 1)
-        //    {
-        //        _toastNotification.AddSuccessToastMessage("Invoice created successfully");
-        //        return RedirectToAction("Index");
-        //    }
-        //    _toastNotification.AddErrorToastMessage("Invoice not saved!");
-        //    return View(Index);
-        //}
-
+      
         public async Task<IActionResult> Index() 
         {
-            //var invoice = await _orderRepository.GetInvoices();
-            //return View(invoice);
-            return View();
+            var invoice = await _orderRepository.GetInvoices();
+            return View(invoice);
             
         }
     }

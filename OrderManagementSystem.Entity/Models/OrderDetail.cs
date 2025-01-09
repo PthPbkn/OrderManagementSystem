@@ -15,6 +15,6 @@ public partial class OrderDetail
     public DateTime? OrderDate { get; set; }
     public decimal? UnitPrice { get; set; }
     public int? Quantity { get; set; }
-    public decimal? ItemTotal { get; set; } 
+    public float? ItemTotal { get; set; } 
 
 }

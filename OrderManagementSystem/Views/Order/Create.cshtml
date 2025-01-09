@@ -18,36 +18,46 @@
                     <td>
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <div class="form-group">
-                            @* <label asp-for="SupplierName" class="control-label"></label> *@
+                            <label asp-for="CustomerName" class="control-label" style="font-size:12px;"></label>
+                            <select asp-for="CustomerID" asp-items="@Model.CustomersList" class="form-control" id="Customer">
+                                <option value="0"> --- Select Customer --- </option>
+                            </select>
+                        </div>
+                    </td>
+
+                    <td>
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group">
+                            <label asp-for="SupplierName" class="control-label" style="font-size:12px;"></label>
                             <select asp-for="SupplierId" asp-items="@Model.SupplierList" class="form-control" id="Suppliers">
                                 <option value="0"> --- Select Supplier --- </option>
                             </select>
                         </div>
                     </td>
-                    <td>
+                    @* <td>
                         <div class="form-group">
-                            @* <label asp-for="Address" class="control-label"></label> *@
+                            @* <label asp-for="Address" class="control-label"></label> *
                             <input id="SuppAddress" type="text" asp-for="Address" value="Address" class="form-control" readonly />
                         </div>
                     </td>
                     <td>
                         <div class="form-group">
-                            @* <label asp-for="Phone" class="control-label"></label> *@
+                            @* <label asp-for="Phone" class="control-label"></label> 
                             <input id="SuppCity" type="text" asp-for="City" value="City" class="form-control" readonly />
                         </div>
                     </td>
                     <td>
                         <div class="form-group">
-                            @* <label asp-for="Phone" class="control-label"></label> *@
+                            @* <label asp-for="Phone" class="control-label"></label> 
                             <input id="SuppPost" type="text" asp-for="PostCode" value="PostCode" class="form-control" readonly />
                         </div>
                     </td>
                     <td>
                         <div class="form-group">
-                            @* <label asp-for="Phone" class="control-label"></label> *@
+                            @* <label asp-for="Phone" class="control-label"></label> 
                             <input id="SuppPhone" type="text" asp-for="Phone" value="Phone" class="form-control" readonly />
                         </div>
-                    </td>
+                    </td> *@
                 </tr>
             </table>
         </div>
@@ -103,6 +113,7 @@
                         </td>
                         <td>
                             <div class="form-group">
+                                <label class="control-label" style="font-size:12px;" ></label>
                                 <input id="addItem" type="button" value="+" class="btn btn-primary form-control" />
                             </div>
                         </td>
@@ -192,29 +203,45 @@
                             <p class="ms-3">Add additional notes and payment information</p>
                         </div>
                         <div class="col-xl-3">
-                            <ul class="list-unstyled">
+                            <table>
+                                <tr >
+                                    <td style="text-align:right; list-style-position:inside;"><span class="text-black me-4">SubTotal : </span></td>
+                                    <td><span id="subTotal">0.00</span></td>
+                                </tr>
+                                <tr >
+                                    <td style="text-align:right; list-style-position:inside;"><span class="text-black me-4">Tax (15%) : </span></td>
+                                    <td><span id="tax">0.00</span></td>
+                                </tr>
+                                <tr >
+                                    <td style="text-align:right; list-style-position:inside;"><span class="text-black me-4">Discount (9%) : </span></td>
+                                    <td><span id="discount">0.00</span></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:right; list-style-position:inside;"><span class="text-black me-4">Total Amount : </span></td>
+                                    <td><span id="totalBill" style="font-size: 20px;">0.00</span></td>
+                                   
+                                    @* <td style="text-align:left; list-style-position:inside;"><span id="totalBill" style="font-size: 20px;">0.00</span></td> *@
+                                </tr>
+                            </table>
+    
+                            @* <ul class="list-unstyled" style="text-align:right; list-style-position:inside;">
                                 <li class="text-muted ms-3">
                                     <span class="text-black me-4">SubTotal : </span>
-                                    <span id="subTotal">
-                                        0.00
-                                    </span>
+                                    <span id="subTotal">0.00</span>
                                 </li>
-                                @* <li class="text-muted ms-3">
-                                    <input id="subTotalID" value="" asp-for="ItemTotal"/>
-                                </li> *@
                                 <li class="text-muted ms-3 mt-2">
-                                    <span class="text-black me-4">Tax(15%) : </span>
+                                    <span class="text-black me-4">Tax (15%) : </span>
                                     <span id="tax">0.00</span>
-                                    @* <input id="TaxID" asp-for="Tax" value="" /> *@
                                 </li>
-                                @* <li>
-                                    <input id="TotalAmtID" asp-for="TotalAmount" value=""/>
-                                </li> *@
-                            </ul>
-                            <p class="text-black float-start">
+                                <li class="text-muted ms-3 mt-2">
+                                    <span class="text-black me-4">Discount (9%) : </span>
+                                    <span id="discount">0.00</span>
+                                </li>
+                            </ul> *@
+                            @* <p class="text-black float-start">
                                 <span class="text-black me-3">Total Amount : </span>
                                 <span id="totalBill" style="font-size: 25px;">0.00</span>                                
-                            </p>
+                            </p> *@
                             
                         </div>
                     </div>
@@ -247,6 +274,9 @@
         $(document).ready(function () {
             var sum = 0;
             var itemTotal = 0;
+            var discount = 0;
+            var tax = 0;
+            var total = 0;
             $('#Suppliers').change(function () {
                 //debugger;
                 var supplierId = $("#Suppliers").val();
@@ -298,7 +328,7 @@
 
 
             $('#productsMenu').change(function () {
-                let productId = $('#productsMenu').val();
+                let productId = parseInt($('#productsMenu').val());
                 $.ajax({
                     url: '@Url.Action("GetProductDetails", "Order")',
                     data: { "Id": productId },
@@ -312,6 +342,7 @@
                     },
                     error: function (error) {
                         alert("failure." + error);
+                        console.log(error);
                     }
                 });
             });
@@ -337,24 +368,23 @@
 
                     //calculate sub total
                     sum = sum + parseFloat(itemTotal);
-                    //$('#amount').val('');
-                    $('#subTotal').text(sum);
-                    $('#subTotalID').val(format.format(sum));
-                    //subTotal = sum;
-                    //console.log('sum: ' + amount);
+                    $('#subTotal').text('£' + sum.toFixed(2));
+
+                    //calculate discount
+                    discount = sum / 100 * 9;
+                    $('#discount').text('£' + discount.toFixed(2));
+
 
                     //Calculate tax
-                    var tax = sum / 100 * 15;
-                    $('#tax').text(tax);
-                    $('#TaxID').val(format.format(tax));
-                    //alert('tax: ' + (format.format(tax)));
-
+                    tax = (sum - discount) / 100 * 15;
+                    $('#tax').text('£' + tax.toFixed(2));
+                    
 
                     //calculate total amount
-                    var total = sum + parseFloat(tax);
-                    $('#totalBill').text(total);
-                    //$('#TotalAmtID').val(format.format(total).replace('GBP', '').trim());
-                    console.log('Total: ' + total);
+                    var totalB4discount = sum - discount;
+                    total = totalB4discount + tax
+                    $('#totalBill').text('£' + total.toFixed(2));
+
 
                 }
                 else {
@@ -374,7 +404,7 @@
                     let stock = parseInt($('#UnitsInStock').val());
                     let realStock = stock - quantity;
                     $('#UnitsInStock').val(realStock);
-                    $('#total').val(formatWithSymbol.format(itemTotal));
+                    $('#total').val(itemTotal.toFixed(2));
                     
                 }
             });
@@ -382,16 +412,15 @@
 
             $('#invoiceBttn').click(function () {
                 //  alert("click");
-
                 const order = {
-                    CustomerID: parseInt(1050),
+                    CustomerID: parseInt($('#Customer').val()),
                     EmployeeID: 10050,
                     InvoiceID: parseInt(1000523),
                     OrderDate: "05/01/2025",
-                    SubTotal: parseFloat($('#subTotal').text()),
-                    Tax: parseFloat($("#tax").text()),
-                    Discount: parseFloat(1.99),
-                    TotalAmount: parseFloat($('#totalBill').text()),
+                    SubTotal: parseFloat(sum.toFixed(2)),
+                    Tax: parseFloat(tax.toFixed(2)),
+                    Discount: parseFloat(discount.toFixed(2)),
+                    TotalAmount: parseFloat(total.toFixed(2)),
                 };
                 console.log(order);
 
@@ -453,6 +482,15 @@
                 style:'currency',
                 currency:'GBP',
                 minimumFractionDigits: 2,
+            });
+
+
+            $(function () {
+                var TotalCoreProd = 0;
+                $("[id*=col01]").each(function () {
+                    TotalCoreProd = TotalCoreProd + parseFloat($(this).html());
+                });
+                $("[id*=TotalCoreProd]").html(TotalCoreProd.toFixed(2));
             });
 
 

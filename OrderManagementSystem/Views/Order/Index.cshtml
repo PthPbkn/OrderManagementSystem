@@ -1,9 +1,59 @@
-﻿
+﻿@model IEnumerable<OrderManagementSystem.Entity.Models.Order>
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<div class="mt-5 mb-4">
+    <a asp-action="Create" class="btn btn-primary">Create New Invoice</a>
+</div>
 
-<a asp-action="Create" class="btn btn-primary">Create Invoice</a>
+
+
+
+<table class="table mt-5" id="EmployeeTable">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(models => models.EmployeeID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.InvoiceID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CustomerID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalAmount)
+            </th>                        
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EmployeeID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.InvoiceID)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.OrderDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TotalAmount)
+                </td>                
+                <td>
+                    <a asp-action="View" asp-route-id="@item.InvoiceID" class="btn btn-primary">View</a> |
+                    <a asp-action="Edit" asp-route-id="@item.InvoiceID" class="btn btn-primary">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@item.InvoiceID" class="btn btn-primary">Delete</a> 
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
 

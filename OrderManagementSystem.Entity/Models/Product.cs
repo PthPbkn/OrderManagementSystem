@@ -21,7 +21,7 @@ public partial class Product
 
     public decimal? UnitPrice { get; set; }
 
-    public short? UnitsInStock { get; set; }
+    public int? UnitsInStock { get; set; }
 
     public short? UnitsOnOrder { get; set; }
 
