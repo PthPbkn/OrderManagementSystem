@@ -9,6 +9,7 @@ namespace OrderManagementSystem.Entity.Models;
 public partial class OrderDetail
 {
     [Key]
+    public int OrderDetailsID { get; set; }
     public int OrderID { get; set; }
     public int? ProductID { get; set; }
     public int? InvoiceID { get; set; }

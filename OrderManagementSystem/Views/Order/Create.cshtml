@@ -9,6 +9,8 @@
 
 <form asp-action="Create" method="post" class="form-inline" enctype="multipart/form-data">
     <div class="card shadow mb-5">
+        <input id="UserID" asp-for="UserID" value="@ViewBag.UserID" type="text" hidden />
+        <input id="dateTime" asp-for="OrderDate" type="text" value="@ViewBag.DateTime" hidden />
         <div class="card-header">
             Supplier
         </div>
@@ -27,7 +29,7 @@
 
                     <td>
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                        <div class="form-group">
+                        <div class="form-group">                            
                             <label asp-for="SupplierName" class="control-label" style="font-size:12px;"></label>
                             <select asp-for="SupplierId" asp-items="@Model.SupplierList" class="form-control" id="Suppliers">
                                 <option value="0"> --- Select Supplier --- </option>
@@ -108,7 +110,7 @@
                             <div class="form-group">
                                 <label asp-for="ItemTotal" class="control-label" style="font-size:12px;"></label>
                                 <input id="total" type="text" value="" class="form-control" readonly/>
-                                @* <input id="totalID" asp-for="ItemTotal" type="text" value=""/> *@
+                                
                             </div>
                         </td>
                         <td>
@@ -171,7 +173,9 @@
                                     <i class="fas fa-circle" style="color:#84B0CA ;"></i> <span class="fw-bold">Invoice ID:</span>#123-456
                                 </li>
                                 <li class="text-muted">
-                                    <i class="fas fa-circle" style="color:#84B0CA ;"></i> <span class="fw-bold">Date: </span>@ViewBag.Date
+                                    <i class="fas fa-circle" style="color:#84B0CA ;"></i> 
+                                    <span class="fw-bold">Date: </span>
+                                    <span id="currDate">@ViewBag.Date</span>                                                            
                                 </li>
                                 @* <li class="text-muted">
                                 <i class="fas fa-circle" style="color:#84B0CA ;"></i> <span class="me-1 fw-bold">Status:</span><span class="badge bg-warning text-black fw-bold">
@@ -411,16 +415,17 @@
 
 
             $('#invoiceBttn').click(function () {
-                //  alert("click");
+                //alert($('#UserID').val());
+
                 const order = {
+                    UserID: $('#UserID').val(),
                     CustomerID: parseInt($('#Customer').val()),
-                    EmployeeID: 10050,
-                    InvoiceID: parseInt(1000523),
-                    OrderDate: "05/01/2025",
-                    SubTotal: parseFloat(sum.toFixed(2)),
-                    Tax: parseFloat(tax.toFixed(2)),
-                    Discount: parseFloat(discount.toFixed(2)),
-                    TotalAmount: parseFloat(total.toFixed(2)),
+                    InvoiceID: parseInt('1005000'),
+                    OrderDate: $('#dateTime').val(),
+                    SubTotal: sum.toFixed(2),
+                    Tax: tax.toFixed(2),
+                    Discount: discount.toFixed(2),
+                    TotalAmount: total.toFixed(2),
                 };
                 console.log(order);
 
@@ -429,9 +434,8 @@
                 $('#invoiceTable > tbody > tr').each(function () {
                     const details = {
                         ProductID: $(this).find('#itemID').html(),
-                        CustomerID: parseInt(1050),
-                        InvoiceID: parseInt(1000523),
-                        OrderDate: "05/01/2025",
+                        CustomerID: parseInt($('#Customer').val()),
+                        OrderDate: $('#dateTime').val(),
                         UnitPrice: $(this).find('#itemPrice').html(),
                         Quantity: $(this).find("#itemQty").html(),
                         ItemTotal: $(this).find("#itemTotl").html(),
@@ -444,12 +448,8 @@
                 //debugger;
                 $.ajax({
                     url: '@Url.Action("Create", "Order")',
-                    contentType: 'application/json',
-                    //contentType: 'application/json; charset=utf-8',
                     dataType: 'json',
                     type: 'POST',
-                    //data: JSON.stringify({ Order: order}, OrderDetails: orderDetails }),
-                    //data: JSON.stringify({Order:order,OrderDetails: orderDetails}),
                     data: { "Order": order, "OrderDetails": orderDetails },
                     success: function (response) {
                         if (response.success) {
@@ -459,8 +459,8 @@
                             alert(response.message);
                         }
                     },
-                    error: function () {
-                        alert("Failed to save order.");
+                    error: function (error) {
+                        alert("Failed to save order." + error);
                     },
                 });
 

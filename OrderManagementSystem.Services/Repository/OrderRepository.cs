@@ -84,9 +84,15 @@ namespace OrderManagementSystem.Services.Repository
 
         public async Task<List<Order>> GetInvoices()
         {
-            return await _context.OrderSet.ToListAsync();   
+            return await _context.OrderSet.OrderByDescending(o => o.OrderID).ToListAsync();   
         }
 
-       
+        public async Task<int> GetLargestInvoiceNumber()
+        {
+            //var invID = await (from inv in _context.OrderSet select inv).Max(x => x.InvoiceID);
+            //return invID;
+            //return await _context.OrderSet.Max(x => x.InvoiceID);
+            return 105000;
+        }
     }
 }

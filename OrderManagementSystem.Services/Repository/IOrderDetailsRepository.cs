@@ -9,6 +9,6 @@ namespace OrderManagementSystem.Services.Repository
 {
     public interface IOrderDetailsRepository
     {
-        Task<int> AddInvoiceDetails(OrderDetail orderDetail);
+        Task<int> AddInvoiceDetails(IEnumerable<OrderDetail> orderDetail);
     }
 }

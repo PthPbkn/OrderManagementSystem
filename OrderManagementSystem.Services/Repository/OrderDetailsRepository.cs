@@ -18,11 +18,20 @@ namespace OrderManagementSystem.Services.Repository
         }
 
 
-        public async Task<int> AddInvoiceDetails(OrderDetail orderDetail)
+        public async Task<int> AddInvoiceDetails(IEnumerable<OrderDetail> orderDetail)
         {
-            _dbContext.OrderDetailsSet.Add(orderDetail);
-            int result = await _dbContext.SaveChangesAsync();
-            return result;
+
+            try
+            {
+                _dbContext.OrderDetailsSet.AddRange(orderDetail);
+                int result = await _dbContext.SaveChangesAsync();
+                return result;
+            }
+            catch (Exception ex)
+            {
+
+                return 0;
+            }
         }
     }
 }

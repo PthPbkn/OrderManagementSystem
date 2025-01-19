@@ -7,6 +7,7 @@ using OrderManagementSystem.Entity.Models;
 using OrderManagementSystem.Entity.Security;
 using OrderManagementSystem.Entity.ViewModels;
 using OrderManagementSystem.Services.Repository;
+using System.Security.Claims;
 
 namespace OrderManagementSystem.Controllers
 {
@@ -89,45 +90,52 @@ namespace OrderManagementSystem.Controllers
         [HttpGet]
         public async Task<IActionResult> Create()
         {
-            //InvoiceViewModel viewModel = new InvoiceViewModel();
             OrderViewModel viewModel = new OrderViewModel();
-            ApplicationUser applicationUser = new ApplicationUser();  //...........?
             ViewBag.Date = DateTime.Now.ToString("MMMM dd,yyyy");
-            viewModel.SupplierList = await GetSuppliers();
+            ViewBag.DateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+            viewModel.SupplierList = await GetSuppliers();  
             viewModel.CustomersList = await GetCustomers();
-            //viewModel.UserName = applicationUser.UserName; // ..............?
-            //if (User.Identity.IsAuthenticated)
-            //{
-            //    var user = User.Identity.Name;
-            //}
-
+            ViewBag.UserID = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            //viewModel.UserID = User.FindFirstValue(ClaimTypes.NameIdentifier);
             return View(viewModel);
         }
 
         [HttpPost]
         public async Task<IActionResult> Create(OrderViewModel viewModel)
         {
-            //if (ModelState.IsValid) 
-            //{
-                Order order = new();
-                var result = await _orderRepository.AddInvoice(order);
-                if (viewModel.OrderDetails != null) 
+
+            if (ModelState.IsValid && viewModel.Order != null) 
+            {
+                var detailsResult = 0;
+                var OrdrResult = await _orderRepository.AddInvoice(viewModel.Order);
+                if (viewModel.OrderDetails != null)
                 {
-                    foreach (var items in viewModel.OrderDetails)
+                    //foreach (var items in viewModel.OrderDetails)
+                    //{
+                    //    items.OrderID = viewModel.Order.OrderID;
+                    //    items.InvoiceID = viewModel.Order.InvoiceID;
+                    //}
+                    viewModel.OrderDetails.ToList().ForEach(items =>
                     {
-                        items.OrderID = order.OrderID;
-                        //items.InvoiceID = order.InvoiceID;
-                        await _orderDetailsRepository.AddInvoiceDetails(items);
-                    }                
+                        items.OrderID = viewModel.Order.OrderID;
+                        items.InvoiceID = viewModel.Order.InvoiceID + 1;
+                    });
+
+                    detailsResult = await _orderDetailsRepository.AddInvoiceDetails(viewModel.OrderDetails);
+
                 }
-                
-                if (result == 1)
+
+                if (OrdrResult == 1)
                 {
                     _toastNotification.AddSuccessToastMessage("Invoice created");
                 }
+                else
+                {
+                    _toastNotification.AddErrorToastMessage("Invoice Not created!");
+                }
 
-            //}
-            return Json(new { success = false, message = "Failed to save the order." });
+            }
+            return Json(new { success = false, message = "Failed to saveeeee the order." });
             //return View();
         }
       
@@ -136,6 +144,12 @@ namespace OrderManagementSystem.Controllers
             var invoice = await _orderRepository.GetInvoices();
             return View(invoice);
             
+        }
+
+        public async Task<int> GetInvoiceNumber()
+        {
+            var invoiceNumber = await _orderRepository.GetLargestInvoiceNumber();
+            return invoiceNumber;
         }
     }
 }
