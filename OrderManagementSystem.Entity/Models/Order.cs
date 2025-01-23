@@ -13,7 +13,7 @@ public partial class Order
     public string? UserID { get; set; }
     public int? CustomerID { get; set; }
     public int? EmployeeID { get; set; }
-    public int? InvoiceID { get; set; }
+    public int? InvoiceID { get; set; }    
     public Nullable<DateTime> OrderDate { get; set; }
     public decimal? SubTotal { get; set; }
     public decimal? Tax { get; set; }

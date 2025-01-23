@@ -1,0 +1,133 @@
+﻿@model OrderManagementSystem.Entity.ViewModels.OrderViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Invoice</h1>
+
+<div class="card shadow mb-5">
+    <div class="card-body">
+        <div class="container mb-5 mt-3">
+            <div class="row d-flex align-items-baseline">
+                <div class="col-xl-9">
+                    <p style="color: #7e8d9f;font-size: 20px;">
+                        <strong>Invoice ID:</strong>
+                        <span id="invIDTop"><strong>#@Model.InvoiceID</strong></span>
+                    </p>
+                </div>
+                <div class="col-xl-3 float-end">
+                    <a data-mdb-ripple-init class="btn btn-light text-capitalize border-0" data-mdb-ripple-color="dark">
+                        <i class="fas fa-print text-primary"></i> Print
+                    </a>
+                    <a data-mdb-ripple-init class="btn btn-light text-capitalize" data-mdb-ripple-color="dark">
+                        <i class="far fa-file-pdf text-danger"></i> Export
+                    </a>
+                </div>
+                <hr>
+            </div>
+
+            <div class="container">
+                <div class="col-md-12">
+                    <div class="text-center">
+                        <p class="font-weight-bold" style="color:#5d9fc5;">Order Management System</p>
+                    </div>
+
+                </div>
+
+
+                <div class="row">
+                    <div class="col-xl-8">
+                        <ul class="list-unstyled">
+                            <li class="text-muted">To: <span id="supName" style="color:#5d9fc5 ;">@Model.CustomerName</span></li>
+                            <li class="text-muted"><span id="SupAddress">@Model.Address</span></li>
+                            <li class="text-muted"><span id="SupCity">@Model.City</span></li>
+                            <li class="text-muted"><span id="SupPost">@Model.PostCode</span></li>
+                            <li class="text-muted"><i id="supPhone" class="fas fa-phone"></i><span id="SupPhone">@Model.Phone</span></li>
+                        </ul>
+                    </div>
+                    <div class="col-xl-4">
+                        @* <p class="text-muted">Invoice</p> *@
+                        <ul class="list-unstyled">
+                            <li class="text-muted">
+                                <i class="fas fa-circle" style="color:#84B0CA ;"></i>
+                                <span class="fw-bold">Invoice ID:</span>
+                                <span id="invID">#@Model.InvoiceID</span>
+                            </li>
+                            <li class="text-muted">
+                                <i class="fas fa-circle" style="color:#84B0CA ;"></i>
+                                <span class="fw-bold">Date: </span>
+                                <span id="currDate">@Model.OrderDate</span>
+                            </li>
+                            <li class="text-muted">
+                                <i class="fas fa-circle" style="color:#84B0CA ;"></i> 
+                                <span class="me-1 fw-bold">Status:</span>
+                                <span class="badge bg-success text-white fw-bold">
+                                    Paid
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="row my-2 mx-1 justify-content-center">
+                    <table id="invoiceTable" class="table table-striped table-borderless">
+                        <thead style="background-color:#84B0CA ;" class="text-white">
+                            <tr>
+                                <th scope="col">Item ID</th>
+                                <th scope="col">Product Name</th>
+                                <th scope="col">Unit Price</th>
+                                <th scope="col">Quantity</th>
+                                <th class="totalamt" scope="col">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+
+                    </table>
+                </div>
+                <div class="row">
+                    <div class="col-xl-8">
+                        <p class="ms-3">Add additional notes and payment information</p>
+                    </div>
+                    <div class="col-xl-3">
+                        <table>
+                            <tr>
+                                <td style="text-align:right; list-style-position:inside;"><span class="text-black me-4">SubTotal : </span></td>
+                                <td><span id="subTotal">£@Model.SubTotal</span></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:right; list-style-position:inside;"><span class="text-black me-4">Tax (15%) : </span></td>
+                                <td><span id="tax">£@Model.Tax</span></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:right; list-style-position:inside;"><span class="text-black me-4">Discount (9%) : </span></td>
+                                <td><span id="discount">£@Model.Discount</span></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:right; list-style-position:inside;"><span class="text-black me-4">Total Amount : </span></td>
+                                <td><span id="totalBill" style="font-size: 20px;">£@Model.TotalAmount</span></td>
+
+                                @* <td style="text-align:left; list-style-position:inside;"><span id="totalBill" style="font-size: 20px;">0.00</span></td> *@
+                            </tr>
+                        </table>
+
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-xl-10">
+                        <p>Thank you for your purchase</p>
+                    </div>
+                    <div class="col-xl-2">
+                        <div class="mt-2 mb-1">
+                            <a asp-action="Index" class="btn btn-primary">Close</a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

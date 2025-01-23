@@ -65,7 +65,6 @@ namespace OrderManagementSystem.Controllers
         public async Task<IActionResult> GetSupplierById(int Id) 
         {
             var suppliers = await _orderRepository.GetSupplierById(Id);
-            //viewModel.ProductsList = await GetProducts(10);
             return Json(suppliers);
         }
 
@@ -93,10 +92,10 @@ namespace OrderManagementSystem.Controllers
             OrderViewModel viewModel = new OrderViewModel();
             ViewBag.Date = DateTime.Now.ToString("MMMM dd,yyyy");
             ViewBag.DateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-            viewModel.SupplierList = await GetSuppliers();  
+            ViewBag.UserID = User.FindFirstValue(ClaimTypes.NameIdentifier);            
+            viewModel.SupplierList = await GetSuppliers();
             viewModel.CustomersList = await GetCustomers();
-            ViewBag.UserID = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            //viewModel.UserID = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            viewModel.InvoiceID = await GetInvoiceNumber();
             return View(viewModel);
         }
 
@@ -107,36 +106,36 @@ namespace OrderManagementSystem.Controllers
             if (ModelState.IsValid && viewModel.Order != null) 
             {
                 var detailsResult = 0;
-                var OrdrResult = await _orderRepository.AddInvoice(viewModel.Order);
+                var ordrResult = await _orderRepository.AddInvoice(viewModel.Order);
                 if (viewModel.OrderDetails != null)
                 {
-                    //foreach (var items in viewModel.OrderDetails)
-                    //{
-                    //    items.OrderID = viewModel.Order.OrderID;
-                    //    items.InvoiceID = viewModel.Order.InvoiceID;
-                    //}
                     viewModel.OrderDetails.ToList().ForEach(items =>
                     {
                         items.OrderID = viewModel.Order.OrderID;
-                        items.InvoiceID = viewModel.Order.InvoiceID + 1;
+                        items.InvoiceID = viewModel.Order.InvoiceID;
                     });
-
                     detailsResult = await _orderDetailsRepository.AddInvoiceDetails(viewModel.OrderDetails);
 
                 }
 
-                if (OrdrResult == 1)
+                if (ordrResult == 1 && detailsResult == 1)
                 {
-                    _toastNotification.AddSuccessToastMessage("Invoice created");
+                    try
+                    {
+                        _toastNotification.AddSuccessToastMessage("Invoice created");
+                    }
+                    catch (Exception e)
+                    {
+
+                        throw e;
+                    }
                 }
                 else
                 {
-                    _toastNotification.AddErrorToastMessage("Invoice Not created!");
+                    _toastNotification.AddErrorToastMessage("Failed to create invoice!");
                 }
-
             }
-            return Json(new { success = false, message = "Failed to saveeeee the order." });
-            //return View();
+            return Json(new { success = true, message = "Order saved successfully!" });
         }
       
         public async Task<IActionResult> Index() 
@@ -144,6 +143,15 @@ namespace OrderManagementSystem.Controllers
             var invoice = await _orderRepository.GetInvoices();
             return View(invoice);
             
+        }
+
+        public async Task<IActionResult> Details(int id)
+        {
+            OrderViewModel orderViewModel = new OrderViewModel();
+            var invoice = await _orderRepository.GetOrder(id);            
+            //orderViewModel.OrderDetails = await _orderDetailsRepository.GetOrderDetails(id);
+            return View(invoice);
+
         }
 
         public async Task<int> GetInvoiceNumber()

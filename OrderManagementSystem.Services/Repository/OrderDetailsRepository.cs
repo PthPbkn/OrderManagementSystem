@@ -1,5 +1,7 @@
-﻿using OrderManagementSystem.Entity.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using OrderManagementSystem.Entity.Data;
 using OrderManagementSystem.Entity.Models;
+using OrderManagementSystem.Entity.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +14,7 @@ namespace OrderManagementSystem.Services.Repository
     {
         private readonly ApplicationDbContext _dbContext;
 
-        public OrderDetailsRepository(ApplicationDbContext dbContext) 
+        public OrderDetailsRepository(ApplicationDbContext dbContext)
         {
             this._dbContext = dbContext;
         }
@@ -27,11 +29,19 @@ namespace OrderManagementSystem.Services.Repository
                 int result = await _dbContext.SaveChangesAsync();
                 return result;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
                 return 0;
             }
         }
+
+        public async Task<List<OrderDetail>> GetOrderDetails(int invoiceId) 
+            {
+                var data = _dbContext.OrderDetailsSet.Where(k => k.InvoiceID == invoiceId).ToList();
+                return data;
+            }
+
+        
     }
 }

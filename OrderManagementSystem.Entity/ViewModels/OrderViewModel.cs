@@ -19,7 +19,7 @@ namespace OrderManagementSystem.Entity.ViewModels
         public Nullable<DateTime> OrderDate { get; set; }
 
         [Display(Name = "Product Name")]
-        public string? ProductName { get; set; }
+           public string? ProductName { get; set; }
 
         [Display(Name = "Unit Price")]
         public decimal? UnitPrice { get; set; }
@@ -32,18 +32,25 @@ namespace OrderManagementSystem.Entity.ViewModels
         public decimal? Discount { get; set; }
         public decimal? Tax { get; set; }
         public decimal? TotalAmount { get; set; }
+        public string? Title { get; set; }
         public string? Address { get; set; }
         public string? City { get; set; }
         public string? PostCode { get; set; }
+        public string? Country { get; set; }
         public string? Phone { get; set; }
         [Display(Name = "Supplier")]
+
         public string? SupplierName { get; set; }
 
         [Display(Name = "Customer")]
+
         public string? CustomerName { get; set; }
         public string? UserID { get; set; }
+
         public List<SelectListItem>? SupplierList { get; set; }
-        public List<SelectListItem>? ProductsList { get; set; }        
+
+        public List<SelectListItem>? ProductsList { get; set; }
+
         public List<SelectListItem>? CustomersList { get; set; }
         public Order? Order { get; set; }
         public List<OrderDetail>? OrderDetails { get; set; }

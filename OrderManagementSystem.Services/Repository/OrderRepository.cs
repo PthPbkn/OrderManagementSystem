@@ -87,12 +87,38 @@ namespace OrderManagementSystem.Services.Repository
             return await _context.OrderSet.OrderByDescending(o => o.OrderID).ToListAsync();   
         }
 
-        public async Task<int> GetLargestInvoiceNumber()
+        public  async Task<int> GetLargestInvoiceNumber()
         {
-            //var invID = await (from inv in _context.OrderSet select inv).Max(x => x.InvoiceID);
-            //return invID;
-            //return await _context.OrderSet.Max(x => x.InvoiceID);
-            return 105000;
+            //var invID = (from inv in _context.OrderSet select inv).Max(x => x.InvoiceID);
+            //return (int)invID;
+            var inv = await _context.OrderSet.MaxAsync(x => x.InvoiceID);
+            return (int)inv;
+        }
+
+        public async Task<OrderViewModel> GetOrder(int invoiceId)
+        {
+            var invoice = await (from order in _context.OrderSet
+                           join cust in _context.CustomerSet on order.CustomerID equals cust.CustomerId
+                           join details in _context.OrderDetailsSet on order.InvoiceID equals details.InvoiceID
+                           where order.InvoiceID == invoiceId
+                           select new OrderViewModel
+                           {
+                               CustomerName = cust.CustomerName,
+                               SubTotal = order.SubTotal,
+                               Tax = order.Tax,
+                               Discount = order.Discount,
+                               TotalAmount = order.TotalAmount,
+                               InvoiceID = order.InvoiceID,
+                               OrderDate = order.OrderDate,
+                               //ItemTotal = details.ItemTotal,
+                               //Quantity = details.Quantity,
+                               Title = cust.Title,
+                               City = cust.City,
+                               PostCode = cust.PostCode,
+                               Phone = cust.Phone,
+                               Country = cust.Country,
+                           }).FirstOrDefaultAsync();
+            return invoice;
         }
     }
 }

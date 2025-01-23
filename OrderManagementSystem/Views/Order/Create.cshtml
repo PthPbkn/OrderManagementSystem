@@ -11,6 +11,7 @@
     <div class="card shadow mb-5">
         <input id="UserID" asp-for="UserID" value="@ViewBag.UserID" type="text" hidden />
         <input id="dateTime" asp-for="OrderDate" type="text" value="@ViewBag.DateTime" hidden />
+        <input id="InvoiceId" asp-for="InvoiceID" value="@Model.InvoiceID" hidden/>
         <div class="card-header">
             Supplier
         </div>
@@ -24,6 +25,7 @@
                             <select asp-for="CustomerID" asp-items="@Model.CustomersList" class="form-control" id="Customer">
                                 <option value="0"> --- Select Customer --- </option>
                             </select>
+                            @* <span asp-validation-for="CustomerName" class="text-danger"></span> *@
                         </div>
                     </td>
 
@@ -34,32 +36,9 @@
                             <select asp-for="SupplierId" asp-items="@Model.SupplierList" class="form-control" id="Suppliers">
                                 <option value="0"> --- Select Supplier --- </option>
                             </select>
+                           @*  <span asp-validation-for="SupplierName" class="text-danger"></span> *@
                         </div>
                     </td>
-                    @* <td>
-                        <div class="form-group">
-                            @* <label asp-for="Address" class="control-label"></label> *
-                            <input id="SuppAddress" type="text" asp-for="Address" value="Address" class="form-control" readonly />
-                        </div>
-                    </td>
-                    <td>
-                        <div class="form-group">
-                            @* <label asp-for="Phone" class="control-label"></label> 
-                            <input id="SuppCity" type="text" asp-for="City" value="City" class="form-control" readonly />
-                        </div>
-                    </td>
-                    <td>
-                        <div class="form-group">
-                            @* <label asp-for="Phone" class="control-label"></label> 
-                            <input id="SuppPost" type="text" asp-for="PostCode" value="PostCode" class="form-control" readonly />
-                        </div>
-                    </td>
-                    <td>
-                        <div class="form-group">
-                            @* <label asp-for="Phone" class="control-label"></label> 
-                            <input id="SuppPhone" type="text" asp-for="Phone" value="Phone" class="form-control" readonly />
-                        </div>
-                    </td> *@
                 </tr>
             </table>
         </div>
@@ -68,6 +47,8 @@
 
 
     @* Products Card*@
+
+
     <div class="card shadow mb-5">
         <div class="card-header">
             Products
@@ -133,8 +114,10 @@
             <div class="container mb-5 mt-3">
                 <div class="row d-flex align-items-baseline">
                     <div class="col-xl-9">
-                        <p style="color: #7e8d9f;font-size: 20px;"><strong>ID: #10001246</strong></p>
-                        <input id="InvoiceId" asp-for="InvoiceID" value="" hidden />
+                        <p  style="color: #7e8d9f;font-size: 20px;">
+                            <strong>Invoice ID:</strong>
+                            <span id="invIDTop"><strong>0000000</strong></span>
+                            </p>
                     </div>
                     <div class="col-xl-3 float-end">
                         <a data-mdb-ripple-init class="btn btn-light text-capitalize border-0" data-mdb-ripple-color="dark">
@@ -170,18 +153,20 @@
                             @* <p class="text-muted">Invoice</p> *@
                             <ul class="list-unstyled">
                                 <li class="text-muted">
-                                    <i class="fas fa-circle" style="color:#84B0CA ;"></i> <span class="fw-bold">Invoice ID:</span>#123-456
+                                    <i class="fas fa-circle" style="color:#84B0CA ;"></i> 
+                                    <span class="fw-bold">Invoice ID:</span>
+                                    <span id="invID">000-000-000</span>
                                 </li>
                                 <li class="text-muted">
                                     <i class="fas fa-circle" style="color:#84B0CA ;"></i> 
                                     <span class="fw-bold">Date: </span>
                                     <span id="currDate">@ViewBag.Date</span>                                                            
                                 </li>
-                                @* <li class="text-muted">
+                                <li class="text-muted">
                                 <i class="fas fa-circle" style="color:#84B0CA ;"></i> <span class="me-1 fw-bold">Status:</span><span class="badge bg-warning text-black fw-bold">
                                 Unpaid
                                 </span>
-                                </li> *@
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -226,27 +211,8 @@
                                    
                                     @* <td style="text-align:left; list-style-position:inside;"><span id="totalBill" style="font-size: 20px;">0.00</span></td> *@
                                 </tr>
-                            </table>
-    
-                            @* <ul class="list-unstyled" style="text-align:right; list-style-position:inside;">
-                                <li class="text-muted ms-3">
-                                    <span class="text-black me-4">SubTotal : </span>
-                                    <span id="subTotal">0.00</span>
-                                </li>
-                                <li class="text-muted ms-3 mt-2">
-                                    <span class="text-black me-4">Tax (15%) : </span>
-                                    <span id="tax">0.00</span>
-                                </li>
-                                <li class="text-muted ms-3 mt-2">
-                                    <span class="text-black me-4">Discount (9%) : </span>
-                                    <span id="discount">0.00</span>
-                                </li>
-                            </ul> *@
-                            @* <p class="text-black float-start">
-                                <span class="text-black me-3">Total Amount : </span>
-                                <span id="totalBill" style="font-size: 25px;">0.00</span>                                
-                            </p> *@
-                            
+                            </table>   
+                     
                         </div>
                     </div>
                     <hr>
@@ -255,10 +221,17 @@
                             <p>Thank you for your purchase</p>
                         </div>
                         <div class="col-xl-2">
-                            <button  id="invoiceBttn" value="" type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary text-capitalize"
+                            <div class="mt-2 mb-1">
+                                <a id="invoiceBttn" class="btn btn-primary">Save Invoice</a>
+                            </div>
+                            <div class="mt-2 mb-1">
+                                <a asp-action="Index" class="btn btn-primary">New Invoice</a>
+                            </div>
+                            
+                            @* <button  id="invoiceBttn" value="" type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary text-capitalize"
                                     style="background-color:#60bdf3;">
-                                Create
-                            </button>
+                                Save 
+                            </button> *@
                         </div>
                     </div>
                 </div>
@@ -281,6 +254,10 @@
             var discount = 0;
             var tax = 0;
             var total = 0;
+            let invNmbr = parseInt($('#InvoiceId').val()) + 1;
+            $('#invID').text(' #' + invNmbr);
+            $('#invIDTop').text(' #' + invNmbr);
+            //alert(invNmbr);
             $('#Suppliers').change(function () {
                 //debugger;
                 var supplierId = $("#Suppliers").val();
@@ -420,7 +397,7 @@
                 const order = {
                     UserID: $('#UserID').val(),
                     CustomerID: parseInt($('#Customer').val()),
-                    InvoiceID: parseInt('1005000'),
+                    InvoiceID: invNmbr,
                     OrderDate: $('#dateTime').val(),
                     SubTotal: sum.toFixed(2),
                     Tax: tax.toFixed(2),
@@ -460,8 +437,8 @@
                         }
                     },
                     error: function (error) {
-                        alert("Failed to save order." + error);
-                    },
+                        //alert("Failed to save order." + error);                    
+                        },
                 });
 
             });
