@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using OrderManagementSystem.Entity.Data;
 using OrderManagementSystem.Entity.Models;
 using OrderManagementSystem.Entity.ViewModels;
@@ -36,12 +37,14 @@ namespace OrderManagementSystem.Services.Repository
             }
         }
 
-        public async Task<List<OrderDetail>> GetOrderDetails(int invoiceId) 
+        public async Task<List<OrderDetail>> GetOrderDetails(int id) 
             {
-                var data = _dbContext.OrderDetailsSet.Where(k => k.InvoiceID == invoiceId).ToList();
-                return data;
+            //int invoiceIdInt16 = (int)invoiceId;
+            //int inv = (Int32)123456;
+              var data = await _dbContext.OrderDetailsSet.Where(m => m.OrderID == id).ToListAsync();           
+              return data;
             }
 
-        
+
     }
 }

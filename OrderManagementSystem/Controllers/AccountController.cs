@@ -32,7 +32,7 @@ namespace OrderManagementSystem.Controllers
                     var result = await _signInManager.PasswordSignInAsync(user, model.Password, false, false);
                     if (result.Succeeded)
                     {
-                        return RedirectToAction("Index", "Employee");
+                        return RedirectToAction("Index", "Home");
                     }
                 }               
 

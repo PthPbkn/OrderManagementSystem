@@ -242,11 +242,6 @@
 </form>
 
 
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-
     <script>
         $(document).ready(function () {
             var sum = 0;
@@ -438,13 +433,9 @@
                     },
                     error: function (error) {
                         //alert("Failed to save order." + error);                    
-                        },
+                     },
                 });
-
-            });
-
-
-            
+            });        
 
 
 
@@ -469,10 +460,13 @@
                 });
                 $("[id*=TotalCoreProd]").html(TotalCoreProd.toFixed(2));
             });
-
-
         });
     </script>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 
 }
 

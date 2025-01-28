@@ -12,10 +12,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation().AddNToastNotifyToastr(new ToastrOptions
 {
     CloseButton = true,
-    TimeOut = 30000,
+    TimeOut = 10000,
     ProgressBar = true,
     CloseDuration = true,
-    PositionClass = ToastPositions.TopCenter,
+    PositionClass = ToastPositions.TopRight,
 
 });
 
@@ -30,6 +30,7 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<ISupplierRepository, SupplierRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IOrderDetailsRepository, OrderDetailsRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddIdentity<ApplicationUser,IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
 
 

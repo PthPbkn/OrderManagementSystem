@@ -15,9 +15,9 @@ namespace OrderManagementSystem.Services.Repository
         Task<List<OrderViewModel>> GetSuppliers();
         Task<OrderViewModel> GetSupplierById(int Id);
         Task<int> AddInvoice(Order order);
-        Task<List<Order>> GetInvoices();
+        Task<List<OrderViewModel>> GetInvoices();
         Task<int> GetLargestInvoiceNumber();
-
         Task<OrderViewModel> GetOrder(int InvoiceID);
+      
     }
 }

@@ -120,22 +120,15 @@ namespace OrderManagementSystem.Controllers
 
                 if (ordrResult == 1 && detailsResult == 1)
                 {
-                    try
-                    {
-                        _toastNotification.AddSuccessToastMessage("Invoice created");
-                    }
-                    catch (Exception e)
-                    {
-
-                        throw e;
-                    }
+                   _toastNotification.AddSuccessToastMessage("Invoice created");
+                 
                 }
                 else
                 {
                     _toastNotification.AddErrorToastMessage("Failed to create invoice!");
                 }
             }
-            return Json(new { success = true, message = "Order saved successfully!" });
+            return Json(new { success = true, message = "Invoice saved successfully!" });
         }
       
         public async Task<IActionResult> Index() 
@@ -148,10 +141,10 @@ namespace OrderManagementSystem.Controllers
         public async Task<IActionResult> Details(int id)
         {
             OrderViewModel orderViewModel = new OrderViewModel();
-            var invoice = await _orderRepository.GetOrder(id);            
+            var invoice = await _orderRepository.GetOrder(id);
             //orderViewModel.OrderDetails = await _orderDetailsRepository.GetOrderDetails(id);
+            //await _orderDetailsRepository.GetOrderDetails(id);
             return View(invoice);
-
         }
 
         public async Task<int> GetInvoiceNumber()

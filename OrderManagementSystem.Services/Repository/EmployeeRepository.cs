@@ -36,9 +36,21 @@ namespace OrderManagementSystem.Services.Repository
             }           
         }
 
-        public async Task<List<Employee>> GetAllEmployees()
+        public async Task<List<EmployeeViewModel>> GetAllEmployees()
         {
-            return await _context.EmployeeSet.ToListAsync();
+                     var employee = await (from emp in _context.EmployeeSet
+                                  join dept in _context.DepartmentSet on emp.DepartmentID equals dept.DepartmentID                               
+                                  select new EmployeeViewModel
+                                  {                                      
+                                      Title = emp.Title,
+                                      FirstName = emp.FirstName,
+                                      LastName = emp.LastName,
+                                      Gender = emp.Gender,
+                                      EmployeeID = emp.EmployeeID,
+                                      HireDate = emp.HireDate,
+                                      DepartName = dept.DepartmentName,
+                                  }).ToListAsync();
+            return employee;
         }
 
         public async Task<EmployeeViewModel> GetEmployeeByEmployeeID(int id)

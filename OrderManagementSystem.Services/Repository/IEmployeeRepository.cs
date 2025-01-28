@@ -10,7 +10,7 @@ namespace OrderManagementSystem.Services.Repository
 {
     public interface IEmployeeRepository
     {
-        Task<List<Employee>> GetAllEmployees();
+        Task<List<EmployeeViewModel>> GetAllEmployees();
 
         Task<int> AddEmployee(Employee employee);
 

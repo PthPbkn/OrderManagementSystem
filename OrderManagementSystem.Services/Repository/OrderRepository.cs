@@ -82,25 +82,39 @@ namespace OrderManagementSystem.Services.Repository
 
         }
 
-        public async Task<List<Order>> GetInvoices()
+        public async Task<List<OrderViewModel>> GetInvoices()
         {
-            return await _context.OrderSet.OrderByDescending(o => o.OrderID).ToListAsync();   
+        
+            var invoices = await (from order in _context.OrderSet
+                                  join cust in _context.CustomerSet on order.CustomerID equals cust.CustomerId
+                                  join user in _context.Users on order.UserID equals user.Id
+                                  orderby order.OrderDate descending 
+                            select new OrderViewModel 
+                            {
+                                InvoiceID = order.InvoiceID,
+                                OrderDate = order.OrderDate,
+                                CustomerName = cust.CustomerName,
+                                UserName = user.UserName,
+                                UserID = order.UserID,
+                                TotalAmount = order.TotalAmount,
+                                OrderID = order.OrderID,
+                                
+                            }).ToListAsync();
+            return invoices;
         }
 
         public  async Task<int> GetLargestInvoiceNumber()
         {
-            //var invID = (from inv in _context.OrderSet select inv).Max(x => x.InvoiceID);
-            //return (int)invID;
             var inv = await _context.OrderSet.MaxAsync(x => x.InvoiceID);
             return (int)inv;
         }
 
-        public async Task<OrderViewModel> GetOrder(int invoiceId)
+        public async Task<OrderViewModel> GetOrder(int orderid)
         {
             var invoice = await (from order in _context.OrderSet
-                           join cust in _context.CustomerSet on order.CustomerID equals cust.CustomerId
-                           join details in _context.OrderDetailsSet on order.InvoiceID equals details.InvoiceID
-                           where order.InvoiceID == invoiceId
+                                 join cust in _context.CustomerSet on order.CustomerID equals cust.CustomerId
+                                 //join details in _context.OrderDetailsSet on order.InvoiceID equals details.InvoiceID
+                                 where order.OrderID == orderid
                            select new OrderViewModel
                            {
                                CustomerName = cust.CustomerName,
@@ -109,9 +123,8 @@ namespace OrderManagementSystem.Services.Repository
                                Discount = order.Discount,
                                TotalAmount = order.TotalAmount,
                                InvoiceID = order.InvoiceID,
+                               OrderID = order.OrderID,
                                OrderDate = order.OrderDate,
-                               //ItemTotal = details.ItemTotal,
-                               //Quantity = details.Quantity,
                                Title = cust.Title,
                                City = cust.City,
                                PostCode = cust.PostCode,
@@ -120,5 +133,7 @@ namespace OrderManagementSystem.Services.Repository
                            }).FirstOrDefaultAsync();
             return invoice;
         }
+
+        
     }
 }

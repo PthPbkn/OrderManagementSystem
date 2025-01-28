@@ -14,8 +14,9 @@ namespace OrderManagementSystem.Entity.ViewModels
         public int ProductID { get; set; }
         public int CustomerID { get; set; }
         public int? EmployeeID { get; set; }
-        public int? InvoiceID { get; set; }
+        public int InvoiceID { get; set; }
         public int SupplierId { get; set; }
+        public int OrderID { get; set; }
         public Nullable<DateTime> OrderDate { get; set; }
 
         [Display(Name = "Product Name")]
@@ -46,6 +47,7 @@ namespace OrderManagementSystem.Entity.ViewModels
 
         public string? CustomerName { get; set; }
         public string? UserID { get; set; }
+        public string? UserName { get; set; }
 
         public List<SelectListItem>? SupplierList { get; set; }
 

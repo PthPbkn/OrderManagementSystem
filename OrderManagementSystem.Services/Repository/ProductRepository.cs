@@ -1,8 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OrderManagementSystem.Entity.Data;
 using OrderManagementSystem.Entity.Models;
+using OrderManagementSystem.Entity.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Drawing.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,9 +32,30 @@ namespace OrderManagementSystem.Services.Repository
             throw new NotImplementedException();
         }
 
-        public async Task<List<Product>> GetAllProducts()
+        public async Task<List<ProductViewModel>> GetAllProducts()
         {
-           return await _context.ProductSet.ToListAsync();
+            var products = await (from prdts in _context.ProductSet
+                                  join category in _context.CategorySet on prdts.CategoryId equals category.CategoryId
+                                  orderby prdts.ProductId descending
+                                  select new ProductViewModel
+                                  {
+                                      ImagePath = prdts.ImagePath,
+                                      ProductName = prdts.ProductName,
+                                      QuantityPerUnit = prdts.QuantityPerUnit,
+                                      UnitPrice = prdts.UnitPrice,
+                                      UnitsInStock = prdts.UnitsInStock,
+                                      UnitsOnOrder = prdts.UnitsOnOrder,
+                                      Discontinued = prdts.Discontinued,
+                                      CategoryName = category.CategoryName,
+                                     
+                                  }).ToListAsync();
+            return products;
+        }
+
+        public async Task<int> GetLargerProductId()
+        {
+            var prodId = await _context.ProductSet.MaxAsync(x => x.ProductId);
+            return prodId;
         }
 
         public Task<List<Product>> GetProductById(int id)
