@@ -1,92 +1,107 @@
 ﻿@model IEnumerable<OrderManagementSystem.Entity.ViewModels.ProductViewModel>
-@* @model OrderManagementSystem.Entity.Models.Product *@
+
 
 @{
     ViewData["Title"] = "Index";
     var path = "../../ProductImages/";
 }
 
+@section styles
+{
+    <link href="~/datatables/css/jquery.datatables.min.css" rel="stylesheet" />
+}
+
 <h3>Products List</h3>
 
-<p>
-    <a asp-action="Create">Add new product</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>                
-                @Html.DisplayNameFor(model => model.ImagePath)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ProductName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.QuantityPerUnit)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UnitPrice)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UnitsInStock)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UnitsOnOrder)
-            </th>
-            @* <th>
-                @Html.DisplayNameFor(model => model.RecorderLevel)
-            </th> *@
-            
-            <th>
-                @Html.DisplayNameFor(model => model.CategoryName)
-            </th>
-@*             <th>
-                @Html.DisplayNameFor(model => model.Supplier)
-            </th> *@
-            <th>
-                @Html.DisplayNameFor(model => model.Discontinued)
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                <img src=@path@item.ImagePath alt="image" class="rounded" width="50" height="50">
-            </td>
-                
-            <td>
-                @Html.DisplayFor(modelItem => item.ProductName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.QuantityPerUnit)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UnitPrice)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UnitsInStock)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UnitsOnOrder)
-            </td>
-@*             <td>
-                @Html.DisplayFor(modelItem => item.RecorderLevel)
-            </td>*@
-            <td>
-                @Html.DisplayFor(modelItem => item.CategoryName)
-            </td>
-           @*  <td>
-                @Html.DisplayFor(modelItem => item.SupplierId)
-            </td> *@
-            <td>
-                @Html.DisplayFor(modelItem => item.Discontinued)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ProductId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ProductId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ProductId">Delete</a>
-            </td>
-        </tr>
+
+
+
+
+<div class="card shadow p-4">
+    <table id="pTable" class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.ImagePath)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ProductName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.QuantityPerUnit)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.UnitPrice)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.UnitsInStock)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.UnitsOnOrder)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CategoryName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Discontinued)
+                </th>
+                <th>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <img src=@path@item.ImagePath alt="image" class="rounded" width="50" height="50">
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProductName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.QuantityPerUnit)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UnitPrice)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UnitsInStock)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UnitsOnOrder)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CategoryName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Discontinued)
+                    </td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@item.ProductId" class="btn btn-success">Details</a>
+                        <a asp-action="Edit" asp-route-id="@item.ProductId" class="btn btn-warning">Edit</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end pt-2 pb-2">        
+        <a asp-action="Create" class="btn btn-primary">Create New Product</a>
+        <a asp-controller="Home" asp-action="Index" class="btn btn-primary">Home</a>
+    </div>
+</div>
+
+  
+
+@section scripts
+{
+    <script src="~/datatables/js/datatables.datatables.min.js"></script>
+    <script src="~/datatables/js/jquery.datatables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#pTable').DataTable();
+        });
+    </script>
+
 }
-    </tbody>
-</table>

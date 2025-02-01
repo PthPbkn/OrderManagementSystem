@@ -143,7 +143,7 @@ namespace OrderManagementSystem.Controllers
             OrderViewModel orderViewModel = new OrderViewModel();
             var invoice = await _orderRepository.GetOrder(id);
             //orderViewModel.OrderDetails = await _orderDetailsRepository.GetOrderDetails(id);
-            //await _orderDetailsRepository.GetOrderDetails(id);
+           await _orderDetailsRepository.GetOrderDetails(id);
             return View(invoice);
         }
 

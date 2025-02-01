@@ -11,10 +11,15 @@ namespace OrderManagementSystem.Services.Repository
     public interface IProductRepository
     {
         public Task<List<ProductViewModel>> GetAllProducts();
-        public Task<Product> GetProductById(int id);
+        public Task<ProductViewModel> GetProductById(int id);
+        public Task<Product> GetProductByIdForEdit(int id);
         public Task<int> AddProduct(Product product);
-        public Task<Product> UpdateProduct(Product product);
-        public Task<Product> DeleteProduct(int id);
+        public Task<Product> DeleteProduct(int id);        
         public Task<int> GetLargerProductId();
+
+        public Task<int> UpdateProduct(Product product);
+
+        public Task<int> DiscontinueProduct(int id);
+
     }
 }

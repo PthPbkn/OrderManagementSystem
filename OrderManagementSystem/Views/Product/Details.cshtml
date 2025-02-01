@@ -1,0 +1,71 @@
+﻿@model OrderManagementSystem.Entity.ViewModels.ProductViewModel
+
+@{
+    ViewData["Title"] = "Product Details";
+    var image = "../../ProductImages/" + @Model?.ImagePath;
+}
+
+    
+<div class="container">
+    <h3>Product Details</h3>
+    <div class="card shadow p-5">    
+        <div class="row">
+                <div class="p-5 col w-50">
+                    <dl class="row my-auto">
+                        <dt class="col-sm-5">
+                            @Html.DisplayNameFor(model => model.ProductName)
+                        </dt>
+                        <dd class="col-sm-7">
+                            @Html.DisplayFor(model => model.ProductName)
+                        </dd>
+                        <dt class="col-sm-5">
+                            @Html.DisplayNameFor(model => model.UnitPrice)
+                        </dt>
+                        <dd class="col-sm-7">
+                            @Html.DisplayFor(model => model.UnitPrice)
+                        </dd>
+                        <dt class="col-sm-5">
+                            @Html.DisplayNameFor(model => model.UnitsInStock)
+                        </dt>
+                        <dd class="col-sm-7">
+                            @Html.DisplayFor(model => model.UnitsInStock)
+                        </dd>
+                        <dt class="col-sm-5">
+                            @Html.DisplayNameFor(model => model.UnitsOnOrder)
+                        </dt>
+                        <dd class="col-sm-7">
+                            @Html.DisplayFor(model => model.UnitsOnOrder)
+                        </dd>
+                        <dt class="col-sm-5">
+                            @Html.DisplayNameFor(model => model.CategoryName)
+                        </dt>
+                        <dd class="col-sm-7">
+                            @Html.DisplayFor(model => model.CategoryName)
+                        </dd>
+                        <dt class="col-sm-5">
+                            @Html.DisplayNameFor(model => model.SupplierName)
+                        </dt>
+                        <dd class="col-sm-7">
+                            @Html.DisplayFor(model => model.SupplierName)
+                        </dd>
+                        <dt class="col-sm-5">
+                            @Html.DisplayNameFor(model => model.Discontinued)
+                        </dt>
+                        <dd class="col-sm-7">
+                            @Html.DisplayFor(model => model.Discontinued)
+                        </dd>
+                    </dl>
+                </div>
+                <div class="col card p-4 w-50">
+                    <img src="@image" alt="image" class="rounded mx-auto d-block my-auto" width="400" height="200">
+                </div>            
+         </div>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end pt-5 pb-2">            
+            <a asp-action="Edit" asp-route-id="@Model.ProductId" class="btn btn-primary">Edit Product</a>
+            <a asp-action="Discontinue" asp-route-id="@Model?.ProductId" class="btn btn-danger">Discontinue This Item</a>
+            <a asp-action="Index" class="btn btn-primary">Close</a>
+        </div>
+    </div>       
+</div>
+
+

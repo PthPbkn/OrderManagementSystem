@@ -30,13 +30,14 @@ public partial class Product
     public short? RecorderLevel { get; set; }
 
     public bool? Discontinued { get; set; }
+    [Display(Name = "Product Image")]
     public string? ImagePath { get; set; }
 
     public virtual Category? Category { get; set; }
 
     public virtual Supplier? Supplier { get; set; }
     [NotMapped]
-    public IFormFile? File { get; set; }
+    public IFormFile? file { get; set; }
 
     [NotMapped]
     public List<SelectListItem>? CategoryList { get; set; }

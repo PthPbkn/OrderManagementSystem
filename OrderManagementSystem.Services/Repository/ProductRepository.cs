@@ -32,6 +32,11 @@ namespace OrderManagementSystem.Services.Repository
             throw new NotImplementedException();
         }
 
+        public Task<ProductViewModel> Details(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<List<ProductViewModel>> GetAllProducts()
         {
             var products = await (from prdts in _context.ProductSet
@@ -47,6 +52,7 @@ namespace OrderManagementSystem.Services.Repository
                                       UnitsOnOrder = prdts.UnitsOnOrder,
                                       Discontinued = prdts.Discontinued,
                                       CategoryName = category.CategoryName,
+                                      ProductId = prdts.ProductId,
                                      
                                   }).ToListAsync();
             return products;
@@ -58,19 +64,56 @@ namespace OrderManagementSystem.Services.Repository
             return prodId;
         }
 
-        public Task<List<Product>> GetProductById(int id)
+         public async Task<ProductViewModel> GetProductById(int id)
+        {
+            var product = await (from products in _context.ProductSet
+                                 join category in _context.CategorySet on products.CategoryId equals category.CategoryId
+                                 join supplier in _context.SupplierSet on products.SupplierId equals supplier.SupplierId
+                                 where products.ProductId == id
+                                 select new ProductViewModel
+                                 {
+                                     ImagePath = products.ImagePath,
+                                     ProductName = products.ProductName,
+                                     QuantityPerUnit = products.QuantityPerUnit,
+                                     UnitPrice = products.UnitPrice,
+                                     UnitsInStock = products.UnitsInStock,
+                                     UnitsOnOrder = products.UnitsOnOrder,
+                                     Discontinued = products.Discontinued,
+                                     CategoryName = category.CategoryName,
+                                     SupplierName = supplier.SupplierName,
+                                     ProductId= products.ProductId,
+
+                                 }).FirstOrDefaultAsync();
+            return product;
+        }
+
+        public async Task<int> UpdateProduct(Product product)
+        {
+                //Product product = new Product()
+                //{
+                //    ImagePath = viewModel.ImagePath,
+                //    ProductName = viewModel.ProductName,
+                //    UnitPrice = viewModel.UnitPrice,
+                //    UnitsInStock = viewModel.UnitsInStock,
+                //    UnitsOnOrder = viewModel.UnitsOnOrder,
+                //    Discontinued = viewModel.Discontinued,
+                //};
+                _context.ProductSet.Update(product);
+                var status = await _context.SaveChangesAsync();
+                return status;
+
+
+        }
+
+        public Task<int> DiscontinueProduct(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Product> UpdateProduct(Product product)
+        public async Task<Product> GetProductByIdForEdit(int id)
         {
-            throw new NotImplementedException();
-        }
-
-        Task<Product> IProductRepository.GetProductById(int id)
-        {
-            throw new NotImplementedException();
+            var result = await _context.ProductSet.FindAsync(id);
+            return result;
         }
     }
 }

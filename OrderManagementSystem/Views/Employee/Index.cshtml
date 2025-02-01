@@ -1,5 +1,4 @@
-﻿@* @model IEnumerable<OrderManagementSystem.Entity.Models.Employee>*@
-@model IEnumerable<OrderManagementSystem.Entity.ViewModels.EmployeeViewModel>
+﻿@model IEnumerable<OrderManagementSystem.Entity.ViewModels.EmployeeViewModel>
   
 @{
     ViewData["Title"] = "Index";
@@ -46,38 +45,38 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.EmployeeID)
-                </td>
+        @foreach (var item in Model) {
+                <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EmployeeID)
+                        </td>
             
-                <td>
-                    @Html.DisplayFor(modelItem => item.Title)
-                </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Title)
+                        </td>
             
-            <td>
-                @Html.DisplayFor(modelItem => item.FirstName)
-            </td> 
-                <td>
-                    @Html.DisplayFor(modelItem => item.LastName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Gender)
-                </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FirstName)
+                    </td> 
+                        <td>
+                            @Html.DisplayFor(modelItem => item.LastName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Gender)
+                        </td>
                 
-            <td>
-                @Html.DisplayFor(modelItem => item.HireDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DepartName)
-            </td>
-            <td>
-                <a asp-action="Details" asp-route-id="@item.EmployeeID" class="btn btn-primary">Details</a>
-            </td>
-        </tr>
-}
-    </tbody> 
+                    <td>
+                        @Html.DisplayFor(modelItem => item.HireDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DepartName)
+                    </td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@item.EmployeeID" class="btn btn-primary">Details</a>
+                    </td>
+                </tr>
+        }
+            </tbody> 
 </table>
 
 @section scripts
@@ -88,7 +87,6 @@
         $(document).ready(function () {
             $('#EmployeeTable').DataTable();
         });
-
     </script>
 
 }

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using NToastNotify;
 using OrderManagementSystem.Entity.Models;
+using OrderManagementSystem.Entity.ViewModels;
 using OrderManagementSystem.Services.Repository;
 
 namespace OrderManagementSystem.Controllers
@@ -49,7 +50,7 @@ namespace OrderManagementSystem.Controllers
             var result = 0;
             if (ModelState.IsValid) 
             {
-                if(product.File != null)
+                if(product.file != null)
                 {
                     string path = Path.Combine(_webHostEnvironment.WebRootPath, "ProductImages");
                     int newProductId = await _productRepository.GetLargerProductId() + 1;
@@ -59,7 +60,7 @@ namespace OrderManagementSystem.Controllers
                         string imagePath = Path.Combine(path, fileName);
                         using (var fileStream = new FileStream(imagePath, FileMode.Create))
                         {
-                            product.File.CopyTo(fileStream);
+                            product.file.CopyTo(fileStream);
                         }
                         product.ImagePath = fileName;
                         product.ProductId = newProductId;
@@ -103,6 +104,50 @@ namespace OrderManagementSystem.Controllers
             }
             return selectList;
         }
+
+        public async Task<IActionResult> Details(int id)
+        {
+            var product = await _productRepository.GetProductById(id);
+            return View(product);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var product = await _productRepository.GetProductByIdForEdit(id);
+            product.SupplierList = await GetAllSuppliers();
+            product.CategoryList = await GetAllCategoryName();
+            return View(product);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Edit(Product product) 
+        {
+            var status = 0;
+            if (ModelState.IsValid)
+            {
+                string path = Path.Combine(_webHostEnvironment.WebRootPath, "ProductImages");
+                if (product.ProductId > 0)
+                {
+                    var fileName = product.ProductId + ".jpeg";
+                    string imagePath = Path.Combine(path, fileName);
+                    using (var fileStream = new FileStream(imagePath, FileMode.Create))
+                    {
+                        product.file?.CopyTo(fileStream);
+                    }
+                    product.ImagePath = fileName;
+                    status = await _productRepository.UpdateProduct(product);
+                    if (status == 1)
+                    {
+                        _toastNotification.AddSuccessToastMessage("Record Updated");
+                        return RedirectToAction("Index");
+                    }
+                    _toastNotification.AddErrorToastMessage("Record not saved");
+                    return View(product);
+                }
+            }
+            _toastNotification.AddErrorToastMessage("Record not saved");
+            return View(product);   
+        } 
         
     }
 }

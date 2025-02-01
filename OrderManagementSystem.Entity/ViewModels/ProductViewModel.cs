@@ -20,6 +20,8 @@ namespace OrderManagementSystem.Entity.ViewModels
 
         [Display(Name = "Category")]
         public string? CategoryName { get; set; }
+        [Display(Name = "Supplier")]
+        public string? SupplierName { get; set; }
         [Display(Name = "Quantity")]
         public int? QuantityPerUnit { get; set; }
         [Display(Name = "Unit Price")]
@@ -31,6 +33,8 @@ namespace OrderManagementSystem.Entity.ViewModels
 
         public bool? Discontinued { get; set; }
         public string? ImagePath { get; set; }
+
+        public IFormFile? file { get; set; }
 
 
     }
