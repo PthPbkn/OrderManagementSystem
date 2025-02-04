@@ -140,11 +140,52 @@ namespace OrderManagementSystem.Controllers
 
         public async Task<IActionResult> Details(int id)
         {
-            OrderViewModel orderViewModel = new OrderViewModel();
-            var invoice = await _orderRepository.GetOrder(id);
-            //orderViewModel.OrderDetails = await _orderDetailsRepository.GetOrderDetails(id);
-           await _orderDetailsRepository.GetOrderDetails(id);
-            return View(invoice);
+            List<OrderViewModel> model = new();
+            
+            var orderData = await _orderRepository.GetOrder(id);
+            //OrderViewModel orderData = new OrderViewModel() 
+            //{
+            //    InvoiceID = invoice.InvoiceID,
+            //    CustomerName = invoice.CustomerName,
+            //    Address = invoice.Address,
+            //    City = invoice.City,
+            //    PostCode = invoice.PostCode,
+            //    Phone = invoice.Phone,
+            //    OrderDate = invoice.OrderDate,
+            //    SubTotal = invoice.SubTotal,
+            //    Tax = invoice.Tax,
+            //    Discount = invoice.Discount,
+            //    TotalAmount = invoice.TotalAmount,
+            //};
+
+            ViewBag.InvoiceID = orderData.InvoiceID;
+            ViewBag.CustomerName = orderData.CustomerName;
+            ViewBag.Address = orderData.Address;
+            ViewBag.City = orderData.City;
+            ViewBag.PostCode = orderData.PostCode;
+            ViewBag.Phone = orderData.Phone;
+            ViewBag.OrderDate = orderData.OrderDate;
+            ViewBag.SubTotal = orderData.SubTotal;
+            ViewBag.Tax = orderData.Tax;
+            ViewBag.Discount = orderData.Discount;
+            ViewBag.TotalAmount = orderData.TotalAmount;
+            //model.Add(orderData);
+
+            var data = await _orderDetailsRepository.GetOrderDetails(id);
+            foreach (var item in data) 
+            {
+                OrderViewModel orderDetails = new OrderViewModel()
+                {
+                    ProductName = item.ProductName,
+                    Quantity = item.Quantity,
+                    UnitPrice = item.UnitPrice,
+                    ItemTotal = item.ItemTotal,
+                };
+                model.Add(orderDetails);                
+            }
+            
+            //await _orderDetailsRepository.GetOrderDetails(id);
+            return View(model);
         }
 
         public async Task<int> GetInvoiceNumber()

@@ -12,7 +12,7 @@ namespace OrderManagementSystem.Services.Repository
     {
         Task<int> AddInvoiceDetails(IEnumerable<OrderDetail> orderDetail);
 
-        public Task<List<OrderDetail>> GetOrderDetails(int InvoiceID);
+        public Task<List<OrderViewModel>> GetOrderDetails(int InvoiceID);
 
     }
 

@@ -19,7 +19,8 @@ namespace OrderManagementSystem.Services.Repository
 
         public Task<int> UpdateProduct(Product product);
 
-        public Task<int> DiscontinueProduct(int id);
+        public Task<int> ContinueDiscontinueProduct(int id);
+    
 
     }
 }

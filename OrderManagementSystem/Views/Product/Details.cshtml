@@ -8,7 +8,11 @@
     
 <div class="container">
     <h3>Product Details</h3>
-    <div class="card shadow p-5">    
+    <div class="card shadow p-5">
+        <div class="form-check form-switch d-grid d-md-flex gap-2 justify-content-md-end pt-1 pb-2">
+            <a asp-for="@Model.Discontinued" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault"></a>
+            <label id="flexSwitchLevel" class="form-check-label" for="flexSwitchCheckDefault">Discontinue</label>
+        </div> 
         <div class="row">
                 <div class="p-5 col w-50">
                     <dl class="row my-auto">
@@ -51,21 +55,71 @@
                         <dt class="col-sm-5">
                             @Html.DisplayNameFor(model => model.Discontinued)
                         </dt>
-                        <dd class="col-sm-7">
+                    <dd id="productStatus" class="col-sm-7">
                             @Html.DisplayFor(model => model.Discontinued)
                         </dd>
                     </dl>
                 </div>
+            @* <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                <label class="form-check-label" for="flexSwitchCheckDefault">Default switch checkbox input</label>
+            </div> *@
                 <div class="col card p-4 w-50">
                     <img src="@image" alt="image" class="rounded mx-auto d-block my-auto" width="400" height="200">
+                    <input id="getProductId" type="text" value="@Model.ProductId" hidden/>
                 </div>            
          </div>
         <div class="d-grid gap-2 d-md-flex justify-content-md-end pt-5 pb-2">            
             <a asp-action="Edit" asp-route-id="@Model.ProductId" class="btn btn-primary">Edit Product</a>
-            <a asp-action="Discontinue" asp-route-id="@Model?.ProductId" class="btn btn-danger">Discontinue This Item</a>
+            @* <select asp-for="Discontinued" asp-items="@Model.Discontinued" class="form-control" id="Customer">
+            </select> *@
+            <input id="discontinueButton" type="button" value="Discontinue This Item" class="btn btn-danger" />
             <a asp-action="Index" class="btn btn-primary">Close</a>
         </div>
     </div>       
 </div>
+
+@section scripts
+{    
+    <script>
+        $(document).ready(function () {
+            let prodStatus = $("#productStatus option:selected").text();
+            alert(prodStatus);
+            if ($("#productStatus option:selected").text()) {
+                $('#discontinueButton').val("Continue this Item");
+            }
+            else {
+                $('#discontinueButton').val("Discontinue this Item");
+            }
+            $('#discontinueButton').click(function () {                
+                var prodctId = $('#getProductId').val();
+                $.ajax({
+                    url: '@Url.Action("Discontinue", "Product")',
+                    dataType:'json',
+                    type: 'POST',
+                    data: { "prodId": prodctId },
+                    success: function (response) {
+                        if (response.success) {
+                            //alert(response.message);
+                            console.log(response.message);
+                            console.log(response);
+                            location.reload();
+                        } else {
+                            //alert(response.message);
+                            console.log(response.message);
+                            console.log(response);
+                        }
+                    },
+                    error: function (error) {
+                        alert("Failed to change product status" + error);
+                        console.log(error);
+                        //console.log(response);
+                    },
+                });            
+            });            
+        });
+    </script>
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}
 
 

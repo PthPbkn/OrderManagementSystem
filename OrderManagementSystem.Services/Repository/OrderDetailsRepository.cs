@@ -37,12 +37,23 @@ namespace OrderManagementSystem.Services.Repository
             }
         }
 
-        public async Task<List<OrderDetail>> GetOrderDetails(int id) 
+        public async Task<List<OrderViewModel>> GetOrderDetails(int id) 
             {
-            //int invoiceIdInt16 = (int)invoiceId;
-            //int inv = (Int32)123456;
-              var data = await _dbContext.OrderDetailsSet.Where(m => m.OrderID == id).ToListAsync();           
-              return data;
+              //var data = await _dbContext.OrderDetailsSet.Where(m => m.OrderID == id).ToListAsync();
+
+
+            var data = await (from orderDetails in _dbContext.OrderDetailsSet
+                                  join products in _dbContext.ProductSet on orderDetails.ProductID equals products.ProductId
+                                  where orderDetails.OrderID == id
+                                  select new OrderViewModel
+                                  {                                      
+                                      ProductName = products.ProductName,
+                                      UnitPrice = orderDetails.UnitPrice,
+                                      Quantity = orderDetails.Quantity,
+                                      ItemTotal = orderDetails.ItemTotal,
+                                  }).ToListAsync();
+
+            return data;
             }
 
 

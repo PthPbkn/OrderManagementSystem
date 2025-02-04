@@ -20,7 +20,7 @@ namespace OrderManagementSystem.Entity.ViewModels
         public Nullable<DateTime> OrderDate { get; set; }
 
         [Display(Name = "Product Name")]
-           public string? ProductName { get; set; }
+        public string? ProductName { get; set; }
 
         [Display(Name = "Unit Price")]
         public decimal? UnitPrice { get; set; }
@@ -28,7 +28,7 @@ namespace OrderManagementSystem.Entity.ViewModels
         [Display(Name = "Units in Stock")]
         public int? UnitsInStock { get; set; }
         public int? Quantity { get; set; }
-        public float? ItemTotal { get; set; }
+        public decimal? ItemTotal { get; set; }
         public decimal? SubTotal { get; set; }
         public decimal? Discount { get; set; }
         public decimal? Tax { get; set; }

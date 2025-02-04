@@ -128,10 +128,11 @@ namespace OrderManagementSystem.Controllers
                 string path = Path.Combine(_webHostEnvironment.WebRootPath, "ProductImages");
                 if (product.ProductId > 0)
                 {
-                    var fileName = product.ProductId + ".jpeg";
+                    var fileName = product.ProductId + ".jpg";
                     string imagePath = Path.Combine(path, fileName);
-                    using (var fileStream = new FileStream(imagePath, FileMode.Create))
+                    using (var fileStream = new FileStream(imagePath, FileMode.Create))                        
                     {
+                        //System.IO.File.Exists(imagePath)
                         product.file?.CopyTo(fileStream);
                     }
                     product.ImagePath = fileName;
@@ -147,7 +148,28 @@ namespace OrderManagementSystem.Controllers
             }
             _toastNotification.AddErrorToastMessage("Record not saved");
             return View(product);   
-        } 
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> Discontinue(int prodId)        
+        {
+            var status = await _productRepository.ContinueDiscontinueProduct(prodId);
+
+            if (status == 0)
+            {
+                _toastNotification.AddSuccessToastMessage("Product Discontinued");
+            }
+            else if (status == 99)            
+                {
+                    _toastNotification.AddWarningToastMessage("Nothing to update");
+                }
+            else
+            {
+                _toastNotification.AddErrorToastMessage("Update Failed");
+            }
+            //return RedirectToAction("Details", "Product", new {id = prodId });
+            return Json(new { success = true, message = "Order saved successfully!" });
+        }
         
     }
 }

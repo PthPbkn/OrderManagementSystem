@@ -89,31 +89,43 @@ namespace OrderManagementSystem.Services.Repository
 
         public async Task<int> UpdateProduct(Product product)
         {
-                //Product product = new Product()
-                //{
-                //    ImagePath = viewModel.ImagePath,
-                //    ProductName = viewModel.ProductName,
-                //    UnitPrice = viewModel.UnitPrice,
-                //    UnitsInStock = viewModel.UnitsInStock,
-                //    UnitsOnOrder = viewModel.UnitsOnOrder,
-                //    Discontinued = viewModel.Discontinued,
-                //};
                 _context.ProductSet.Update(product);
-                var status = await _context.SaveChangesAsync();
-                return status;
+                return await _context.SaveChangesAsync();
 
 
         }
 
-        public Task<int> DiscontinueProduct(int id)
+        public async Task<int> ContinueDiscontinueProduct(int prodId)
         {
-            throw new NotImplementedException();
+            var status = 0;
+            var prodct = await _context.ProductSet.FirstOrDefaultAsync(x => x.ProductId == prodId);
+            if (prodct != null) 
+            {
+                if (prodct.Discontinued == false) 
+                {
+                    prodct.Discontinued = true;
+                } 
+                else
+                {
+                    prodct.Discontinued = false;
+                }    
+                status = await _context.SaveChangesAsync();                
+            }
+            else
+            {
+                //nothing to update
+                status = 99;
+            }
+            return status;                       
         }
+
 
         public async Task<Product> GetProductByIdForEdit(int id)
         {
             var result = await _context.ProductSet.FindAsync(id);
             return result;
         }
+
+        
     }
 }

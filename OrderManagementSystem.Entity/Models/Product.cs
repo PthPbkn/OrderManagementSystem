@@ -30,6 +30,7 @@ public partial class Product
     public short? RecorderLevel { get; set; }
 
     public bool? Discontinued { get; set; }
+
     [Display(Name = "Product Image")]
     public string? ImagePath { get; set; }
 
