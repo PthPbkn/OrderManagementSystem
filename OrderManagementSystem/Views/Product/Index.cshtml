@@ -78,8 +78,8 @@
                         @Html.DisplayFor(modelItem => item.Discontinued)
                     </td>
                     <td>
-                        <a asp-action="Details" asp-route-id="@item.ProductId" class="btn btn-success">Details</a>
-                        <a asp-action="Edit" asp-route-id="@item.ProductId" class="btn btn-warning">Edit</a>
+                        <a asp-action="Details" asp-route-id="@item.ProductId" class="btn btn-primary"><i class="fa-brands fa-readme"></i></a>
+                        <a asp-action="Edit" asp-route-id="@item.ProductId" class="btn btn-primary"  ><i class="fa-solid fa-file-pen" style="color: #fdfdfc;"></i></a>
                     </td>
                 </tr>
             }
@@ -88,7 +88,7 @@
 
     <div class="d-grid gap-2 d-md-flex justify-content-md-end pt-2 pb-2">        
         <a asp-action="Create" class="btn btn-primary">Create New Product</a>
-        <a asp-controller="Home" asp-action="Index" class="btn btn-primary">Home</a>
+        <a asp-controller="Home" asp-action="Index" class="btn btn-primary"><i class="fa-solid fa-house"></i></a>
     </div>
 </div>
 

@@ -52,6 +52,7 @@ namespace OrderManagementSystem.Entity.ViewModels
         public int? DepartmentID { get; set; }
         public String  DepartName { get; set; }
         public String  CountryName { get; set; }
+        [Display(Name = "Photo")]
         public string? ImagePath { get; set; }
     }
 }

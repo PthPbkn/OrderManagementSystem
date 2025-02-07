@@ -3,17 +3,21 @@
     ViewData["Title"] = "Index";
 }
 
-<div class="mt-5 mb-4">
-    <a asp-action="Create" class="btn btn-primary">Create New Invoice</a>
-</div>
+
+@section styles
+{
+    <link href="~/datatables/css/jquery.datatables.min.css" rel="stylesheet" />
+}
 
 
-
-
+<div class="card shadow p-5">
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-4">
+        <a asp-controller="Home" asp-action="Index" class="btn btn-primary"><i class="fa-solid fa-house"></i></a>
+        <a asp-action="Create" class="btn btn-primary">Create New Invoice</a>
+    </div>
 <table class="table mt-5" id="InvoiceTable">
     <thead>
-        <tr>
-            
+        <tr>            
             <th>
                 @Html.DisplayNameFor(model => model.InvoiceID)
             </th>
@@ -28,14 +32,16 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.TotalAmount)
-            </th>     
+            </th>
+            <th>
+
+            </th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                
+            <tr>                
                 <td>
                     @Html.DisplayFor(modelItem => item.InvoiceID)
                 </td>
@@ -52,12 +58,24 @@
                     @Html.DisplayFor(modelItem => item.TotalAmount)
                 </td>                
                 <td>
-                    <a asp-action="Details" asp-route-id="@item.OrderID" class="btn btn-primary">View</a> |
-                    <a asp-action="Edit" asp-route-id="@item.InvoiceID" class="btn btn-primary">Edit</a> |
-                    <a asp-action="Delete" asp-route-id="@item.InvoiceID" class="btn btn-primary">Delete</a> 
+                        <a asp-action="Details" asp-route-id="@item.OrderID" class="btn btn-primary btn-sm"><i class="fa-brands fa-readme"></i></a>
+                    @* <a asp-action="Edit" asp-route-id="@item.InvoiceID" class="btn btn-primary btn-sm">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@item.InvoiceID" class="btn btn-primary btn-sm">Delete</a> *@
                 </td>
             </tr>
         }
     </tbody>
 </table>
+</div>
 
+@section scripts
+{
+    <script src="~/datatables/js/datatables.datatables.min.js"></script>
+    <script src="~/datatables/js/jquery.datatables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#InvoiceTable').DataTable();
+        });
+    </script>
+
+}

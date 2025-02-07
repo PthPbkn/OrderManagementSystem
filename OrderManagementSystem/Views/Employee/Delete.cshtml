@@ -4,10 +4,9 @@
     ViewData["Title"] = "Delete";
 }
 
-<div>
-    <h4>Delete Employee Record</h4>
-    <h5 class="text-danger">Are you sure you want to delete this employee?</h5>
-    <hr />
+<div class="card shadow p-5">
+    
+    <h5 class="text-danger mb-4">Are you sure you want to delete this employee?</h5>
     <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Title)
@@ -89,8 +88,12 @@
             @Html.DisplayFor(model => model.Phone)
         </dd>
     </dl>
+    <div class="form-group d-grid gap-2 d-md-flex justify-content-md-end pt-4">
+        <form asp-action="Delete">
+            <input type="submit" value="Delete" class="btn btn-danger" />
+            <a asp-action="Details" asp-route-id="@Model.EmployeeID" class="btn btn-success">Cancel</a>
+        </form>
+    </div>    
 </div>
 
-<form asp-action="Delete">
-    <input type="submit" value="Delete" class="btn btn-danger" /> |
-</form>
+
