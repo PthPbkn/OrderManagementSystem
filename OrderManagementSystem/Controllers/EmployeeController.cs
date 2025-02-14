@@ -75,7 +75,7 @@ namespace OrderManagementSystem.Controllers
             return View(emp);
 
         }
-
+        [HttpGet]
         public async Task<IActionResult> Details(int id)
         { 
             var employee = await _repository.GetEmployeeByEmployeeID(id);            

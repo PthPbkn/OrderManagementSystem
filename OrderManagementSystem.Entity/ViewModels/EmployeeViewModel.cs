@@ -12,6 +12,8 @@ namespace OrderManagementSystem.Entity.ViewModels
     public class EmployeeViewModel
     {
         public int EmployeeID { get; set; }
+        [Display(Name = "Name")]
+        public string? EmployeeName { get; set; }
         [Required]
         [Display(Name = "Last Name")]
         public string? LastName { get; set; }

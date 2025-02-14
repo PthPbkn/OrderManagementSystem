@@ -1,86 +1,114 @@
 ﻿@model IEnumerable<OrderManagementSystem.Entity.ViewModels.EmployeeViewModel>
-  
+
 @{
     ViewData["Title"] = "Index";
+    var image = "";
+    var empId = 0;
 }
+
 
 @section styles
 {
     <link href="~/datatables/css/jquery.datatables.min.css" rel="stylesheet" />
 }
 
-<h3>Employee List</h3>
-
-<p>
-    
-</p>
-
 <div class="card shadow p-5">
-    <div class="d-grid d-md-flex justify-content-md-end pb-4">
-        <a asp-action="Create" class="btn btn-primary">Add New Employee</a>
+
+    <div class="row">
+        <div class="col">
+            <h5>All Employees</h5>
+        </div>
+        <div class="col d-grid d-md-flex justify-content-md-end pb-4">
+            <a asp-action="Create" class="btn btn-primary">Add New Employee</a>
+        </div>
     </div>
-    <table class="table" id="EmployeeTable">
+    
+    
+    <table class="hover display" id="EmployeeTable">
         <thead>
             <tr>
                 <th>
+                    Image
+                </th>
+                <th style="width:fit-content">
                     @Html.DisplayNameFor(models => models.EmployeeID)
-                </th>           
-                <th>
-                    @Html.DisplayNameFor(model => model.Title)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.FirstName)
+                    @Html.DisplayNameFor(models => models.EmployeeName)
+                </th>
+
+                @* <th>
+                @Html.DisplayNameFor(model => model.Title)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.LastName)
+                @Html.DisplayNameFor(model => model.FirstName)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Gender)
-                </th>
-            
+                @Html.DisplayNameFor(model => model.LastName)
+                </th> *@
+                @* <th>
+                @Html.DisplayNameFor(model => model.Gender)
+                </th> *@
+
                 <th>
                     @Html.DisplayNameFor(model => model.HireDate)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.DepartName)
                 </th>
-
-                <th></th>
+                <th>
+                    Action
+                </th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model) {
-                    <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.EmployeeID)
-                            </td>
-            
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Title)
-                            </td>
-            
-                        <td>
-                            @Html.DisplayFor(modelItem => item.FirstName)
-                        </td> 
-                            <td>
-                                @Html.DisplayFor(modelItem => item.LastName)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Gender)
-                            </td>
-                
-                        <td>
-                            @Html.DisplayFor(modelItem => item.HireDate)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.DepartName)
-                        </td>
-                        <td>
-                        <a asp-action="Details" asp-route-id="@item.EmployeeID" class="btn btn-primary"><i class="fa-brands fa-readme"></i></a>
-                        </td>
-                    </tr>
+            @foreach (var item in Model)
+            {
+                image = "../../Images/" + item.ImagePath;
+                empId = item.EmployeeID;
+
+                <tr id="employeeRow">
+                    <td>
+
+                        <img src="@image" alt="" class="rounded-circle shadow p-1" width="45" height="45" style="background-color: white">
+                    </td>
+                    <td id="empIdForClickEvent" class="ps-3">
+                        @* <input id="getEmpID" value="@item.EmployeeID" /> *@
+                        @Html.DisplayFor(modelItem => item.EmployeeID)
+                    </td>
+                    <td class="ps-3">
+                        @Html.DisplayFor(modelItem => item.EmployeeName)
+                    </td>
+
+                    @* <td class ="ps-3">
+                @Html.DisplayFor(modelItem => item.Title)
+                </td>
+
+                <td class="ps-3">
+                @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                <td class="ps-3">
+                @Html.DisplayFor(modelItem => item.LastName)
+                </td> *@
+                    @* <td>
+                @Html.DisplayFor(modelItem => item.Gender)
+                </td> *@
+
+                    <td class="ps-3">
+                        @Html.DisplayFor(modelItem => item.HireDate)
+                    </td>
+                    <td class="ps-3">
+                        @Html.DisplayFor(modelItem => item.DepartName)
+                    </td>
+
+                    <td>
+@*                         <a asp-action="Details" asp-route-id="@item.EmployeeID" class="btn btn-primary" alt="View"><i class="fa-solid fa-eye"></i></a>
+ *@                        <a asp-action="Edit" asp-route-id="@item.EmployeeID" class="btn btn-success"><i class="fa-solid fa-pencil"></i></a>
+                        <a asp-action="Delete" asp-route-id="@item.EmployeeID" class="btn btn-warning"><i class="fa-solid fa-trash-can" style="color: #fcfcfd;"></i></a>
+                    </td>
+                </tr>
             }
-                </tbody> 
+        </tbody>
     </table>
 </div>
 
@@ -92,6 +120,14 @@
     <script>
         $(document).ready(function () {
             $('#EmployeeTable').DataTable();
+
+
+            $("#EmployeeTable").on('click', 'tr', function () {
+                var empID = parseInt($(this).find("#empIdForClickEvent").html());
+                //alert(empID);
+
+                window.location.href = '@Url.Action("Details", "Employee")/' + empID;
+            });
         });
     </script>
 

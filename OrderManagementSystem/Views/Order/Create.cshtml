@@ -435,27 +435,27 @@
 
 
 
-            let format = new Intl.NumberFormat({
-                style: 'currency',
-                currency: 'GBP',
-                minimumFractionDigits: 2,
-                currencyDisplay:'code'
-            });
+            // let format = new Intl.NumberFormat({
+            //     style: 'currency',
+            //     currency: 'GBP',
+            //     minimumFractionDigits: 2,
+            //     currencyDisplay:'code'
+            // });
 
-            let formatWithSymbol = new Intl.NumberFormat('en-GB', {
-                style:'currency',
-                currency:'GBP',
-                minimumFractionDigits: 2,
-            });
+            // let formatWithSymbol = new Intl.NumberFormat('en-GB', {
+            //     style:'currency',
+            //     currency:'GBP',
+            //     minimumFractionDigits: 2,
+            // });
 
 
-            $(function () {
-                var TotalCoreProd = 0;
-                $("[id*=col01]").each(function () {
-                    TotalCoreProd = TotalCoreProd + parseFloat($(this).html());
-                });
-                $("[id*=TotalCoreProd]").html(TotalCoreProd.toFixed(2));
-            });
+            // $(function () {
+            //     var TotalCoreProd = 0;
+            //     $("[id*=col01]").each(function () {
+            //         TotalCoreProd = TotalCoreProd + parseFloat($(this).html());
+            //     });
+            //     $("[id*=TotalCoreProd]").html(TotalCoreProd.toFixed(2));
+            // });
         });
     </script>
 

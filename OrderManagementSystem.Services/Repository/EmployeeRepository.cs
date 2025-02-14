@@ -41,14 +41,16 @@ namespace OrderManagementSystem.Services.Repository
                      var employee = await (from emp in _context.EmployeeSet
                                   join dept in _context.DepartmentSet on emp.DepartmentID equals dept.DepartmentID                               
                                   select new EmployeeViewModel
-                                  {                                      
-                                      Title = emp.Title,
-                                      FirstName = emp.FirstName,
-                                      LastName = emp.LastName,
+                                  {                 
+                                      EmployeeName = emp.Title + ". " + emp.FirstName + "  " + emp.LastName,
+                                      //Title = emp.Title,
+                                      //FirstName = emp.FirstName,
+                                      //LastName = emp.LastName,
                                       Gender = emp.Gender,
                                       EmployeeID = emp.EmployeeID,
                                       HireDate = emp.HireDate,
                                       DepartName = dept.DepartmentName,
+                                      ImagePath = emp.ImagePath,
                                   }).ToListAsync();
             return employee;
         }
