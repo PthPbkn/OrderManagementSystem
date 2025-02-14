@@ -143,21 +143,6 @@ namespace OrderManagementSystem.Controllers
             List<OrderViewModel> model = new();
             
             var orderData = await _orderRepository.GetOrder(id);
-            //OrderViewModel orderData = new OrderViewModel() 
-            //{
-            //    InvoiceID = invoice.InvoiceID,
-            //    CustomerName = invoice.CustomerName,
-            //    Address = invoice.Address,
-            //    City = invoice.City,
-            //    PostCode = invoice.PostCode,
-            //    Phone = invoice.Phone,
-            //    OrderDate = invoice.OrderDate,
-            //    SubTotal = invoice.SubTotal,
-            //    Tax = invoice.Tax,
-            //    Discount = invoice.Discount,
-            //    TotalAmount = invoice.TotalAmount,
-            //};
-
             ViewBag.InvoiceID = orderData.InvoiceID;
             ViewBag.CustomerName = orderData.CustomerName;
             ViewBag.Address = orderData.Address;
@@ -169,7 +154,6 @@ namespace OrderManagementSystem.Controllers
             ViewBag.Tax = orderData.Tax;
             ViewBag.Discount = orderData.Discount;
             ViewBag.TotalAmount = orderData.TotalAmount;
-            //model.Add(orderData);
 
             var data = await _orderDetailsRepository.GetOrderDetails(id);
             foreach (var item in data) 

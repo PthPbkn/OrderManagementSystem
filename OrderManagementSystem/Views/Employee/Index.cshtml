@@ -73,26 +73,11 @@
                         <img src="@image" alt="" class="rounded-circle shadow p-1" width="45" height="45" style="background-color: white">
                     </td>
                     <td id="empIdForClickEvent" class="ps-3">
-                        @* <input id="getEmpID" value="@item.EmployeeID" /> *@
                         @Html.DisplayFor(modelItem => item.EmployeeID)
                     </td>
                     <td class="ps-3">
                         @Html.DisplayFor(modelItem => item.EmployeeName)
                     </td>
-
-                    @* <td class ="ps-3">
-                @Html.DisplayFor(modelItem => item.Title)
-                </td>
-
-                <td class="ps-3">
-                @Html.DisplayFor(modelItem => item.FirstName)
-                </td>
-                <td class="ps-3">
-                @Html.DisplayFor(modelItem => item.LastName)
-                </td> *@
-                    @* <td>
-                @Html.DisplayFor(modelItem => item.Gender)
-                </td> *@
 
                     <td class="ps-3">
                         @Html.DisplayFor(modelItem => item.HireDate)

@@ -15,7 +15,7 @@
         <a asp-controller="Home" asp-action="Index" class="btn btn-primary"><i class="fa-solid fa-house"></i></a>
         <a asp-action="Create" class="btn btn-primary">Create New Invoice</a>
     </div>
-<table class="table mt-5" id="InvoiceTable">
+<table class="hover display mt-5" id="InvoiceTable">
     <thead>
         <tr>            
             <th>
@@ -43,6 +43,7 @@
         {
             <tr>                
                 <td>
+                        <input id="getOrderIdForClickEvent" asp-for="@item.OrderID" value="@item.OrderID" type="text"  hidden/>
                     @Html.DisplayFor(modelItem => item.InvoiceID)
                 </td>
                 <td>
@@ -58,7 +59,7 @@
                     @Html.DisplayFor(modelItem => item.TotalAmount)
                 </td>                
                 <td>
-                        <a asp-action="Details" asp-route-id="@item.OrderID" class="btn btn-primary btn-sm"><i class="fa-brands fa-readme"></i></a>
+                    @* <a asp-action="Details" asp-route-id="@item.OrderID" class="btn btn-primary btn-sm"><i class="fa-brands fa-readme"></i></a> *@
                     @* <a asp-action="Edit" asp-route-id="@item.InvoiceID" class="btn btn-primary btn-sm">Edit</a> |
                     <a asp-action="Delete" asp-route-id="@item.InvoiceID" class="btn btn-primary btn-sm">Delete</a> *@
                 </td>
@@ -75,6 +76,14 @@
     <script>
         $(document).ready(function () {
             $('#InvoiceTable').DataTable();
+
+            $("#InvoiceTable").on('click', 'tr', function () {
+                var orderID = parseInt($(this).find("#getOrderIdForClickEvent").val());
+                //alert(orderID);
+
+                window.location.href = '@Url.Action("Details", "Order")/' + orderID;
+            });
+
         });
     </script>
 

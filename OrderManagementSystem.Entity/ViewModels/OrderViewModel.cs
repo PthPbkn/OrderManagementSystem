@@ -14,9 +14,11 @@ namespace OrderManagementSystem.Entity.ViewModels
         public int ProductID { get; set; }
         public int CustomerID { get; set; }
         public int? EmployeeID { get; set; }
+        [Display(Name ="Invoice Id")]
         public int InvoiceID { get; set; }
         public int SupplierId { get; set; }
         public int OrderID { get; set; }
+        [Display(Name = "Date")]
         public Nullable<DateTime> OrderDate { get; set; }
 
         [Display(Name = "Product Name")]
@@ -32,6 +34,7 @@ namespace OrderManagementSystem.Entity.ViewModels
         public decimal? SubTotal { get; set; }
         public decimal? Discount { get; set; }
         public decimal? Tax { get; set; }
+        [Display(Name = "Amount")]
         public decimal? TotalAmount { get; set; }
         public string? Title { get; set; }
         public string? Address { get; set; }
@@ -47,6 +50,7 @@ namespace OrderManagementSystem.Entity.ViewModels
 
         public string? CustomerName { get; set; }
         public string? UserID { get; set; }
+        [Display(Name = "Created By")]
         public string? UserName { get; set; }
 
         public List<SelectListItem>? SupplierList { get; set; }
