@@ -108,13 +108,9 @@ namespace OrderManagementSystem.Services.Repository
                 else
                 {
                     prodct.Discontinued = false;
-                }    
+
+                }
                 status = await _context.SaveChangesAsync();                
-            }
-            else
-            {
-                //nothing to update
-                status = 99;
             }
             return status;                       
         }

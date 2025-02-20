@@ -102,8 +102,7 @@ namespace OrderManagementSystem.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(OrderViewModel viewModel)
         {
-
-            if (ModelState.IsValid && viewModel.Order != null) 
+            if (ModelState.IsValid && viewModel.Order != null && viewModel.OrderDetails != null) 
             {
                 var detailsResult = 0;
                 var ordrResult = await _orderRepository.AddInvoice(viewModel.Order);
@@ -118,17 +117,17 @@ namespace OrderManagementSystem.Controllers
 
                 }
 
-                if (ordrResult == 1 && detailsResult == 1)
+                if (ordrResult == 1 && detailsResult != 0)
                 {
-                   _toastNotification.AddSuccessToastMessage("Invoice created");
-                 
+                    return Json(new { success = true, redirectToUrl=Url.Action("Index","Order")});
                 }
                 else
                 {
-                    _toastNotification.AddErrorToastMessage("Failed to create invoice!");
+                    return Json(new { success = false, message = "Failed to save invoice!" });
                 }
             }
-            return Json(new { success = true, message = "Invoice saved successfully!" });
+            //return RedirectToAction("Index");
+            return Json(new { success = false, message = "Empty invoice" });
         }
       
         public async Task<IActionResult> Index() 

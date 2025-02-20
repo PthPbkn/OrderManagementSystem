@@ -12,10 +12,12 @@ namespace OrderManagementSystem.Entity.ViewModels
     public class OrderViewModel
     {
         public int ProductID { get; set; }
+        [Required]
         public int CustomerID { get; set; }
         public int? EmployeeID { get; set; }
         [Display(Name ="Invoice Id")]
         public int InvoiceID { get; set; }
+        [Required]
         public int SupplierId { get; set; }
         public int OrderID { get; set; }
         [Display(Name = "Date")]
@@ -47,7 +49,8 @@ namespace OrderManagementSystem.Entity.ViewModels
         public string? SupplierName { get; set; }
 
         [Display(Name = "Customer")]
-
+        [Required]
+        //[RegularExpression(@"[a-zA-Z]", ErrorMessage = "Customer name can only contain letters, numbers, and underscores")]
         public string? CustomerName { get; set; }
         public string? UserID { get; set; }
         [Display(Name = "Created By")]

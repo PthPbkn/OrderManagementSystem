@@ -9,10 +9,19 @@
     <link href="~/datatables/css/jquery.datatables.min.css" rel="stylesheet" />
 }
 
-<h1>Customers</h1>
+
+<div class="card p-5">
+    <div class="row">
+        <div class="col">
+            <h5>Customer List</h5>
+        </div>
+        <div class="col gap-2 d-grid d-md-flex justify-content-md-end pb-4">
+            <a asp-controller="Home" asp-action="Index" class="btn btn-outline-primary"><i class="fa-solid fa-house"></i></a>
+        </div>
+    </div>
 
 
-<table class="table" id="CustomerTable">
+<table class="hover display" id="CustomerTable">
     <thead>
         <tr>
             <th>
@@ -72,6 +81,9 @@
 }
     </tbody>
 </table>
+
+
+</div>
 
 @section scripts
 {

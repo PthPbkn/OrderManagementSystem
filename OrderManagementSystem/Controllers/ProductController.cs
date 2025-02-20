@@ -155,20 +155,16 @@ namespace OrderManagementSystem.Controllers
         {
             var status = await _productRepository.ContinueDiscontinueProduct(prodId);
 
-            if (status == 0)
+            if (status == 1)
             {
-                _toastNotification.AddSuccessToastMessage("Product Discontinued");
+                _toastNotification.AddSuccessToastMessage("Product status changed");
             }
-            else if (status == 99)            
-                {
-                    _toastNotification.AddWarningToastMessage("Nothing to update");
-                }
             else
             {
-                _toastNotification.AddErrorToastMessage("Update Failed");
+                _toastNotification.AddErrorToastMessage("Somthing wrong, Nothing updated");
             }
-            //return RedirectToAction("Details", "Product", new {id = prodId });
-            return Json(new { success = true, message = "Order saved successfully!" });
+            
+            return Json(new { success = true, message = "Product status updated" });
         }
         
     }

@@ -4,12 +4,26 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Supplier Index</h1>
 
-<p>
-    <a asp-action="Create">Create New Supplier</a>
-</p>
-<table class="table">
+@section styles
+{
+    <link href="~/datatables/css/jquery.datatables.min.css" rel="stylesheet" />
+}
+
+<div class="card shadow p-4">
+
+    <div class="row">
+        <div class="col">
+            <h5>Supplier List</h5>
+        </div>
+        <div class="col gap-2 d-grid d-md-flex justify-content-md-end pb-4">
+            <a asp-action="Create" class="btn btn-success">Create New Supplier</a>
+            <a asp-controller="Home" asp-action="Index" class="btn btn-outline-primary"><i class="fa-solid fa-house"></i></a>
+        </div>
+    </div>
+
+
+<table id="supplierTable" class="hover display">
     <thead>
         <tr>
             <th>
@@ -27,7 +41,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Phone)
             </th>
-            <th></th>
+            <th>
+                Action
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -58,4 +74,20 @@
         }
     </tbody>
 </table>
+</div>
+
+
+@section scripts
+{
+    <script src="~/datatables/js/datatables.datatables.min.js"></script>
+    <script src="~/datatables/js/jquery.datatables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#supplierTable').DataTable();
+
+
+        });
+    </script>
+
+}
 

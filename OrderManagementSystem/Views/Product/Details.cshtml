@@ -3,99 +3,105 @@
 @{
     ViewData["Title"] = "Product Details";
     var image = "../../ProductImages/" + @Model?.ImagePath;
+    var isToggledOn = Model.Discontinued ?? false;  // Default to false if Model is null
 }
 
-    
+
 <div class="container">
-    <h3>Product Details</h3>
-    <div class="card shadow p-5">
-        <div class="form-check form-switch d-grid d-md-flex gap-2 justify-content-md-end pt-1 pb-2">
-            <a asp-for="@Model.Discontinued" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault"></a>
-            <label id="flexSwitchLevel" class="form-check-label" for="flexSwitchCheckDefault">Discontinue</label>
-        </div> 
-        <div class="row">
-                <div class="p-5 col w-50">
-                    <dl class="row my-auto">
-                        <dt class="col-sm-5">
-                            @Html.DisplayNameFor(model => model.ProductName)
-                        </dt>
-                        <dd class="col-sm-7">
-                            @Html.DisplayFor(model => model.ProductName)
-                        </dd>
-                        <dt class="col-sm-5">
-                            @Html.DisplayNameFor(model => model.UnitPrice)
-                        </dt>
-                        <dd class="col-sm-7">
-                            @Html.DisplayFor(model => model.UnitPrice)
-                        </dd>
-                        <dt class="col-sm-5">
-                            @Html.DisplayNameFor(model => model.UnitsInStock)
-                        </dt>
-                        <dd class="col-sm-7">
-                            @Html.DisplayFor(model => model.UnitsInStock)
-                        </dd>
-                        <dt class="col-sm-5">
-                            @Html.DisplayNameFor(model => model.UnitsOnOrder)
-                        </dt>
-                        <dd class="col-sm-7">
-                            @Html.DisplayFor(model => model.UnitsOnOrder)
-                        </dd>
-                        <dt class="col-sm-5">
-                            @Html.DisplayNameFor(model => model.CategoryName)
-                        </dt>
-                        <dd class="col-sm-7">
-                            @Html.DisplayFor(model => model.CategoryName)
-                        </dd>
-                        <dt class="col-sm-5">
-                            @Html.DisplayNameFor(model => model.SupplierName)
-                        </dt>
-                        <dd class="col-sm-7">
-                            @Html.DisplayFor(model => model.SupplierName)
-                        </dd>
-                        <dt class="col-sm-5">
-                            @Html.DisplayNameFor(model => model.Discontinued)
-                        </dt>
-                    <dd id="productStatus" class="col-sm-7">
-                            @Html.DisplayFor(model => model.Discontinued)
-                        </dd>
-                    </dl>
+    
+
+    <div class="card shadow p-5" id="card">
+
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <h5>Product Details</h5>
                 </div>
-            @* <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-                <label class="form-check-label" for="flexSwitchCheckDefault">Default switch checkbox input</label>
-            </div> *@
-                <div class="col card p-4 w-50">
-                    <img src="@image" alt="image" class="rounded mx-auto d-block my-auto" width="400" height="200">
-                    <input id="getProductId" type="text" value="@Model.ProductId" hidden/>
-                </div>            
-         </div>
-        <div class="d-grid gap-2 d-md-flex justify-content-md-end pt-5 pb-2">            
-            <a asp-action="Edit" asp-route-id="@Model.ProductId" class="btn btn-primary">Edit Product</a>
-            @* <select asp-for="Discontinued" asp-items="@Model.Discontinued" class="form-control" id="Customer">
-            </select> *@
-            <input id="discontinueButton" type="button" value="Discontinue This Item" class="btn btn-danger" />
+                <div class="col-md-auto">
+                    Product discontinued?
+                </div>
+                <div class="col-md-auto">
+                    <div class="form-check form-switch d-flex justify-content-end mb-4">
+                        <input class="form-check-input" type="checkbox" id="toggleSwitch" @(isToggledOn ? "checked" : "") role="switch" />
+                        @* <label id="toggleSwitchLabelID" class="form-check-label" for="flexSwitchCheckDefault">Continue</label> *@
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        
+        <div class="row">
+            <div class="p-5 col w-50">
+                <dl class="row my-auto">
+                    <dt class="col-sm-5">
+                        @Html.DisplayNameFor(model => model.ProductName)
+                    </dt>
+                    <dd class="col-sm-7">
+                        @Html.DisplayFor(model => model.ProductName)
+                    </dd>
+                    <hr>
+                    <dt class="col-sm-5">
+                        @Html.DisplayNameFor(model => model.UnitPrice)
+                    </dt>
+                    <dd class="col-sm-7">
+                        @Html.DisplayFor(model => model.UnitPrice)
+                    </dd>
+                    <hr>
+                    <dt class="col-sm-5">
+                        @Html.DisplayNameFor(model => model.UnitsInStock)
+                    </dt>
+                    <dd class="col-sm-7">
+                        @Html.DisplayFor(model => model.UnitsInStock)
+                    </dd>
+                    <hr>
+                    <dt class="col-sm-5">
+                        @Html.DisplayNameFor(model => model.UnitsOnOrder)
+                    </dt>
+                    <dd class="col-sm-7">
+                        @Html.DisplayFor(model => model.UnitsOnOrder)
+                    </dd>
+                    <hr>
+                    <dt class="col-sm-5">
+                        @Html.DisplayNameFor(model => model.CategoryName)
+                    </dt>
+                    <dd class="col-sm-7">
+                        @Html.DisplayFor(model => model.CategoryName)
+                    </dd>
+                    <hr>
+                    <dt class="col-sm-5">
+                        @Html.DisplayNameFor(model => model.SupplierName)
+                    </dt>
+                    <dd class="col-sm-7">
+                        @Html.DisplayFor(model => model.SupplierName)
+                    </dd>
+                </dl>
+            </div>
+            <div class="col card p-4 w-50">
+                <img src="@image" alt="image" class="rounded mx-auto d-block my-auto" width="400" height="200">
+                <input id="getProductId" type="text" value="@Model.ProductId" hidden />
+            </div>
+        </div>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end pt-5 pb-2">
+            <a asp-action="Edit" asp-route-id="@Model.ProductId" class="btn btn-warning"><i class="fa-solid fa-pencil" style="color: #fdfdfc;"></i></a>
             <a asp-action="Index" class="btn btn-primary">Close</a>
         </div>
-    </div>       
+    </div>
 </div>
 
 @section scripts
-{    
+{
     <script>
         $(document).ready(function () {
-            let prodStatus = $("#productStatus option:selected").text();
-            alert(prodStatus);
-            if ($("#productStatus option:selected").text()) {
-                $('#discontinueButton').val("Continue this Item");
-            }
-            else {
-                $('#discontinueButton').val("Discontinue this Item");
-            }
-            $('#discontinueButton').click(function () {                
+            $('#toggleSwitch').change(function () {
+                var isCheck = this.checked;
+                //console.log(isCheck);
+
+
                 var prodctId = $('#getProductId').val();
                 $.ajax({
                     url: '@Url.Action("Discontinue", "Product")',
-                    dataType:'json',
+                    dataType: 'json',
                     type: 'POST',
                     data: { "prodId": prodctId },
                     success: function (response) {
@@ -111,12 +117,12 @@
                         }
                     },
                     error: function (error) {
-                        alert("Failed to change product status" + error);
+                        alert("Product status not changed, something went wrong");
                         console.log(error);
                         //console.log(response);
                     },
-                });            
-            });            
+                });
+            });
         });
     </script>
     @await Html.PartialAsync("_ValidationScriptsPartial")

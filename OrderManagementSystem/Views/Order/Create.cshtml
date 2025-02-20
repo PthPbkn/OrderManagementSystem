@@ -22,10 +22,10 @@
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <div class="form-group">
                             <label asp-for="CustomerName" class="control-label" style="font-size:12px;"></label>
-                            <select asp-for="CustomerID" asp-items="@Model.CustomersList" class="form-control" id="Customer">
-                                <option value="0"> --- Select Customer --- </option>
+                            <select asp-for="CustomerName" asp-items="@Model.CustomersList" class="form-control" id="Customer">
+                                <option value="0">--- Select Customer ---</option>
                             </select>
-                            @* <span asp-validation-for="CustomerName" class="text-danger"></span> *@
+                            <span asp-validation-for="CustomerName" class="text-danger"></span>
                         </div>
                     </td>
 
@@ -33,7 +33,7 @@
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <div class="form-group">                            
                             <label asp-for="SupplierName" class="control-label" style="font-size:12px;"></label>
-                            <select asp-for="SupplierId" asp-items="@Model.SupplierList" class="form-control" id="Suppliers">
+                            <select asp-for="SupplierName" asp-items="@Model.SupplierList" class="form-control" id="Suppliers">
                                 <option value="0"> --- Select Supplier --- </option>
                             </select>
                            @*  <span asp-validation-for="SupplierName" class="text-danger"></span> *@
@@ -61,7 +61,7 @@
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                             <div class="form-group">
                                 <label asp-for="ProductName" class="control-label" style="font-size:12px;"></label>
-                                <select id="productsMenu" asp-for="ProductID" asp-items="@Model.ProductsList" class="form-control">
+                                <select id="productsMenu" asp-for="ProductName" asp-items="@Model.ProductsList" class="form-control">
                                     <option value="0">--- Products ---</option>
                                 </select>
 
@@ -90,7 +90,8 @@
                         <td>
                             <div class="form-group">
                                 <label asp-for="ItemTotal" class="control-label" style="font-size:12px;"></label>
-                                <input id="total" type="text" value="" class="form-control" readonly/>
+                                <input asp-for="ItemTotal" id="total" type="text" value="" class="form-control" readonly/>
+                                <span asp-validation-for="ItemTotal" class="text-danger"></span>
                                 
                             </div>
                         </td>
@@ -223,7 +224,7 @@
                         </div>
                         <div class="col-xl-6">
                             <div class="d-grid gap-2 d-md-flex justify-content-md-end pt-2 pb-2">
-                                <a id="invoiceBttn" class="btn btn-primary">Save Invoice</a>
+                                <a id="invoiceBttn" class="btn btn-primary">Save</a>
                                 <a asp-action="Index" class="btn btn-danger">Cancel</a>
                             </div>                        
 
@@ -237,7 +238,11 @@
 </form>
 
 @section Scripts {
-    
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
     <script>
         $(document).ready(function () {
             var sum = 0;
@@ -421,43 +426,44 @@
                     data: { "Order": order, "OrderDetails": orderDetails },
                     success: function (response) {
                         if (response.success) {
-                            alert(response.message);
-                            location.reload();
+                            window.location.href = response.redirectToUrl;
                         } else {
-                            alert(response.message);
+                           alert(response.message);
                         }
                     },
                     error: function (error) {
-                        //alert("Failed to save order." + error);                    
+                        alert("Failed to save Invoice.");                    
                      },
                 });
             });        
 
 
 
-            // let format = new Intl.NumberFormat({
-            //     style: 'currency',
-            //     currency: 'GBP',
-            //     minimumFractionDigits: 2,
-            //     currencyDisplay:'code'
-            // });
+            let format = new Intl.NumberFormat({
+                style: 'currency',
+                currency: 'GBP',
+                minimumFractionDigits: 2,
+                currencyDisplay:'code'
+            });
 
-            // let formatWithSymbol = new Intl.NumberFormat('en-GB', {
-            //     style:'currency',
-            //     currency:'GBP',
-            //     minimumFractionDigits: 2,
-            // });
+            let formatWithSymbol = new Intl.NumberFormat('en-GB', {
+                style:'currency',
+                currency:'GBP',
+                minimumFractionDigits: 2,
+            });
 
 
-            // $(function () {
-            //     var TotalCoreProd = 0;
-            //     $("[id*=col01]").each(function () {
-            //         TotalCoreProd = TotalCoreProd + parseFloat($(this).html());
-            //     });
-            //     $("[id*=TotalCoreProd]").html(TotalCoreProd.toFixed(2));
-            // });
+            $(function () {
+                var TotalCoreProd = 0;
+                $("[id*=col01]").each(function () {
+                    TotalCoreProd = TotalCoreProd + parseFloat($(this).html());
+                });
+                $("[id*=TotalCoreProd]").html(TotalCoreProd.toFixed(2));
+            });
         });
     </script>
+
+
 
 
 }

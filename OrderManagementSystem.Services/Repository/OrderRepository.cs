@@ -87,8 +87,8 @@ namespace OrderManagementSystem.Services.Repository
         
             var invoices = await (from order in _context.OrderSet
                                   join cust in _context.CustomerSet on order.CustomerID equals cust.CustomerId
-                                  join user in _context.Users on order.UserID equals user.Id
-                                  orderby order.OrderDate descending 
+                                  join user in _context.Users on order.UserID equals user.Id                                  
+                                  orderby order.OrderID descending 
                             select new OrderViewModel 
                             {
                                 InvoiceID = order.InvoiceID,
